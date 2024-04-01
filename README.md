@@ -5,3 +5,12 @@ Ich verwende es in verschiedenen Kontexten, einmal als Einstieg in Cloudficicati
 
 Zum Anpassen des "Brandings" können in der Hauptdatei (Praktische Digitalisierung.tex) die defines in den ersten Zeilen angepasst werden.
 
+Den Quelltext findet man unter:
+
+- https://github.com/schlingensiepen/cloudification-esp8266
+- https://github.com/schlingensiepen/cloudification-opencv
+- https://github.com/schlingensiepen/cloudification-azure-iothub-websocket
+
+Der aktuelle Output findet sich immer als Artefakt (Anhang) zu den Actions unter
+
+https://github.com/schlingensiepen/cloudification-doc/actions
