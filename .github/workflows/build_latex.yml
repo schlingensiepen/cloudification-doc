@@ -45,4 +45,8 @@ jobs:
           # args: # optional, default is -pdf -latexoption=-file-line-error -latexoption=-interaction=nonstopmode
           # Install extra packages by apt-get
           # extra_system_packages: # optional
-        
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v4
+        with:
+          name: Praktische Digitalisierung.pdf
+          path: Praktische Digitalisierung.pdf
