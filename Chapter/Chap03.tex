@@ -1,0 +1,303 @@
+\chap{progard}{Programmieren mit Arduino}
+Arduino ist eine Hard- und Softwareplattform, die als Open-Source angeboten wird \seeexcursus{arduino}. Dazu gehört auch eine leicht zu erlernende 
+Programmiersprache \textit{Processing} in der die Programme sog. Sketches geschrieben werden können. Diese Sprache ist sehr stark an die Programmiersprache 
+C++ angelehnt, ist aber etwas vereinfacht, um den Einstieg zu erleichtern. Beide Sprachen können innerhalb eines Projektes gemischt werden.
+In diesem Kapitel wird dargestellt, wie die notwendigen Elemente, die in den vorhergehenden Abschnitten dargestellt sind, in einer Sketch geschrieben werden.
+
+\sect{progardbasic}{Basics}
+
+\ssect{decl}{Deklaration von Variablen}
+
+\begin{src}
+int A;
+\end{src}
+
+Bei der Deklaration einer Variablen muss zunächst angegeben werden, um welche Art von Datum es sich handelt. Man spricht hier vom Datentyp. 
+Als erstes wird der Typ angegeben und dann der Name. In der ersten Zeile des Beispiels wird eine Variable für Ganzzahlen mit dem Namen \code{A} deklariert. 
+Der Typ für Ganzzahlen heißt Integer und wird mit dem Schlüsselwort \code{int} bezeichnet. Man sagt: 
+\textit{Die Variable \code{A} ist vom Typ Integer.} Abgeschlossen wird die Deklaration mit einem Semikolon.
+Im Flussdiagramm sind die Anweisungen dadurch voneinander abgegrenzt, dass jede in einem eigenen Kästchen notiert ist. 
+In einer Sketch wird jede Anweisung durch ein Semikolon abgeschlossen.
+
+\vfill\null\columnbreak
+\ssect{zuw}{Zuweisungen}
+Wie schon beschrieben sind die Zuweisungen der Teil eines Programms, in dem gerechnet wird. Dazu muss man Berechnungen eindeutig formulieren können. 
+Dazu sind bestimmte Zeichen definiert und einer Funktionen zugeordnet. Man spricht von \term{Operatoren}. 
+Es gibt \term{Rechenoperatoren}, \term{Zuweisungsoperatoren} und \term{Vergleichsoperatoren}. 
+In der Regel sind diese an die Darstellung der Operatoren aus der Mathematik angelehnt. 
+So ist der Zuweisungsoperator in einer Sketch das \code{=}, im Unterschied zum Vergleichsoperator \code{==}, 
+der Vergleichsoperator \textit{größer als oder gleich} $\geq$ wird als \code{>=} dargestellt und Addition und Subtraktion sind mit 
+\code{+} und \code{-} definiert.
+
+\begin{src}
+int A;
+A = 5;
+int B;
+B = A + 4;
+\end{src}
+
+Im Beispiel sieht man zunächst die Deklaration der Variablen \code{A} vom Typ Integer und dann eine einfache Zuweisung. 
+Es wird der Wert 5 zugewiesen. Steht eine Zahl direkt im Quelltext, spricht man von einer \term{Konstante}. 
+In der folgenden Zeile wird die Variable \code{B} vom Typ Integer deklariert und in der letzten Zeile wird gerechnet. 
+Bei Ausführung des Programms wird erst der rechte Teil ausgewertet. Dort sind die Variable \code{A} und die Konstante \code{4} 
+mit dem Additionsoperator \code{+} verknüpft, so dass sich eine \code{9} als Wert ergibt. 
+Dieser Wert wird mit den Zuweisungsoperator \code{=} der Variable \code{B} zugewiesen.
+
+\pagebreak\ssect{init}{Initialisierung von Variablen}
+\begin{src}
+int B = 5;
+String message = 
+  "Dies ist ein Beispiel.";
+\end{src}
+
+Die Deklaration einer Variablen kann auch gleich mit einer Zuweisung verbunden werden. Man spricht dann von einer \term{Initialisierung}. 
+Die erste Zeile liest man so: \textit{Die Variable \code{B} ist vom Typ Integer und wird mit \code{5} initialisiert.} 
+Oft benötigt man für eine Berechnung einen bestimmten Startwert in einer Variablen, zur Vermeidung von Programmierfehlern sollten daher alle 
+Variablen gleich bei der Deklaration initialisiert werden.
+Die zweite Zeile zeigt die Deklaration und Initialisierung einer Variable \code{message}. Diese ist vom Typ \code{String}. 
+Das ist der Typ zum Speichern von Text und wird im Deutschen oft als \term{Zeichenkette} bezeichnet. 
+
+\ssect{cmmt}{Kommentare}
+Wie man sieht, ist die Notation der Sprache eindeutig aber für den menschlichen Betrachter nicht sehr eingängig. 
+Daher gibt es die Möglichkeit im Quelltext Kommentare einzufügen. 
+
+\begin{src}
+int A = 35; // Dies ist die erste Zahl
+int B = 25; // Dies ist die zweite Zahl
+\end{src}
+
+Fügt man in den Text zwei Schrägstriche \code{//} ein, dann wird der Rest der Zeile als Kommentar behandelt. 
+Hier kann man dann Erläuterungen einfügen. Die nächste Zeile ist dann wieder normaler Quelltext.
+
+\begin{src}
+int A = 35; 
+/*  Weil er mehrere Zeilen 
+    umfasst, ist dies ist 
+    ein mehrzeiliger Kommentar
+*/
+\end{src}
+
+Fügt man in den Text einen Schrägstrich gefolgt von einem Stern \code{/*} ein, dann wird alles als Kommentar behandelt.
+Bis das nächste mal ein Stern gefolgt von einem Schrägstrich \code{*/} im Code auftaucht.
+
+\newpage\sect{ctlr}{Flusskontrolle}
+
+\ssect{cond}{Bedingungen}
+Für die Flusskontrolle mit Verzweigungen und Schleifen müssen Bedingungen formuliert werden können. Dazu gibt es in einer Sketch die Vergleichsoperatoren, z.B.
+
+\begin{src}
+A == B     // Ist gleich
+A >  B     // Ist größer als
+A <  B     // Ist kleiner als
+A >= B     // Ist größer oder gleich
+A <= B     // Ist kleiner oder gleich
+A != B     // Ist ungleich
+\end{src}
+\vfill\null\columnbreak
+\ssect{branch}{Verzweigung}
+Eine Verzweigung wird in einer Sketch mit dem Schlüsselwort \code{if} eingeleitet. 
+Diesem folgt in runden Klammern ( \code{(...)} ) die Bedingung. 
+Im folgenden Beispiel ist die Bedingung \code{A>B}:
+
+\begin{src}
+// Verzweigung, abhängig von Bedingung: 
+// Ist A größer B?
+if (A > B)
+{
+  // Block der ausgeführt wird 
+  // wenn A größer B
+  E = A - B;  
+  A = E;      
+}
+else
+{
+  // Block der ausgeführt wird 
+  // wenn A NICHT größer B
+  E = B - A;  
+  B = E;      
+}
+\end{src}
+
+Im Beispiel werden die Schritte \step{2} bis \step{4} aus \reffig{ggtPlan2} gezeigt. Nach der Bedingung folgen die Anweisungen, 
+die ausgeführt werden sollen, wenn die Bedingung \emph{wahr} ist. 
+Dazu werden die Anweisungen, die den Schritten \step{3a} und \step{4a} entsprechen mit geschweiften Klammern (\code{\{...\}}) zu einem Block zusammengefasst. 
+Nach diesem Block folgt das Schlüsselwort \code{else}, gefolgt von einem weiteren Block. 
+Dieser Block wird ausgeführt, wenn die Bedingung nicht \emph{wahr} ist und enthält in diesem Beispiel die Anweisungen, die \step{3b} und \step{4b} entsprechen.
+\vfill\null\pagebreak
+\ssect{loops}{Schleifen}
+Zur Beschreibung von Schleifen gibt es mehrere Möglichkeiten. Es gibt Schleifen, bei denen erst überprüft wird, ob die Abbruchbedingung erfüllt ist und dann die Schleife ausgeführt wird, bis diese Bedingung erfüllt ist. Außerdem gibt es noch Schleifen, die immer ersteinmal ausgeführt werden, bevor geprüft wird, 
+je nach dem ob also vor oder nach der Ausführung geprüft wird spricht man
+von \term{pre-check-loop} (vorher prüfende Schleife) oder \term{post-check-loop} (danach prüfende Schleife).
+Im Deutschen nutzt man die Begriffe \term{kopfgesteuerte Schleife} und \term{fußgesteuerte Schleife}.
+
+In einer Sketch sieht eine kopfgesteuerte Schleife so aus:
+
+\begin{src}
+while (A != B)
+{
+  // Schleifenkörper
+}
+\end{src}
+
+Eingeleitet wird mit dem Schlüsselwort \code{while}, dem (wie bei \code{if}) in runden Klammern (\code{()})
+die Bedingung folgt. Das Beispiel zeigt die Bedinung aus \reffig{ggtPlan2} \step{5} mit dem Ungleichoperator (\code{!=}).
+Die Schleife wird also so lange ausgeführt, wie die Zahlen in \code{A} und \code{B} ungleich sind.
+Danach folgt der Teil, der immer wieder ausgeführt wird, der sogenannte Schleifenkörper, der auch
+mit geschweiften Klammern ( \code{\{...\}} ) zusammengefasst ist.
+
+An der Anordnung der Elemente (erst die Bedingung, dann der Schleifenkörper) kann man gut sehen, dass
+hier erst die Abbruchbedingung geprüft wird und dann der Schleifenkörper ausgeführt wird.
+Dementsprechend ist die Anordnung bei der fußgesteuerten Schleife andersherum:
+
+\begin{src}
+do
+{
+  // Schleifenkörper
+} while (A != B)
+\end{src}
+
+Eingeleitet wird diese Schleife mit dem Schlüsselwort <<do>> gefolgt vom Schleifenkörper an den dann
+das Schlüsselwort <<while>> mit der Bedingung in runden Klammern angehängt wird.
+An dieser Anordnung kann man schon erkennen:
+Hier wird erst der Schleifenkörper ausgeführt und dann die Bedingung geprüft.
+
+Mit diesen beiden Schleifenarten kann man schon alles beschreiben, da man aber sehr oft Schleifen
+braucht, bei denen eine festgelegte Zahl von Wiederholungen ausgeführt wird, gibt es in den
+meisten Sprachen noch sog. Zählschleifen, bei denen eine Variable von einem Startwert bis zu einem
+Zielwert gezählt wird und für jedem Schritt wird der Schleifenkörper ausgeführt.
+Das könnte man auch mit einer Pre-Test-Loop machen, die Zählschleife ist aber übersichtlicher.
+
+In einer Sketch sieht eine solche Zählschleife z.B. so aus:
+
+\begin{src}
+for (int i = 0; i < 12; i++)
+{
+  // Schleifenkörper
+}
+\end{src}
+
+Eingeleitet wird mit den Schlüsselwort \code{for} gefolgt, von den bekannten runden Klammern.
+Diesmal ist der Teil in den runden Klammern aber durch Semikolon in drei Abschnitte unterteilt:
+\begin{src}
+for ( Initialisierung ;  
+  Abbruchbedingung ; 
+  Schritt)
+{
+  // Schleifenkörper
+}
+\end{src}
+
+Die einzelnen Abschnitte haben folgende Bedeutung:
+\begin{description}
+	\item[Initialisierung] Dieser Teil wird vor Beginn des ersten Schleifendurchlaufes einmal ausgeführt. 
+	Im Beispiel sieht man, dass mit \code{int i = 0} eine Variable vom Typ \code{int} (Ganzzahl) deklariert und
+	initialisiert wird. Die Variable \code{i} ist in der Schleife verfügbar und startet in unserem Beispiel mit dem
+	Wert 0.
+	\item[Abbruchbedingung] Die Abbruchbedingung funktioniert, wie bei der anderen Pre-Check-Loop auch, sie wird vor jedem
+	Schleifendurchlauf ausgewertet und wenn die Auswertung \emph{falsch} ergibt, dann endet die Ausführung der Schleife. 
+	Das kann - wie bei jeder Pre-Check-Loop auch - schon vor dem ersten Schleifendurchlauf der Fall sein, dann wird der 
+	Schleifenkörper gar nicht ausgeführt.
+	\item[Schritt] Dieser Abschnitt wird nach jedem Durchlauf des Schleifenkörpers ausgeführt, bevor die Abbruchbedingung
+	ausgewertet wird. Im Beispiel wird mit \code{i++} der Wert der Variablen \code{i} immer um eins erhöht. So dass nach dem zwölften
+	Schleifendurchlauf die Abbruchbedingung erfüllt ist und die Ausführung endet.
+\end{description}
+\vfill\null\columnbreak
+\ssect{break}{Schleifenabbruch}
+Manchmal kann es notwendig sein, dass man die Ausführung des Schleifenkörpers mittendrin beenden will. Dann würde im Flussdiagramm ein
+Pfeil aus der Schleife ganz woanders hinzeigen. Dazu gibt es zwei Möglichkeiten:
+\begin{description}
+  \item[continue] Es wird nur die aktuelle Ausführung des Schleifenkörpers beendet, es wird also mit der Auswertung der Abbruchbedingung
+	fortgefahren und ggf. die Schleife weiter ausgeführt. Das Schlüsselwort hierfür ist \code{continue}.
+  \item[break] Es wird nur die komplette Schleife beendet, die Abbruchbedingung wird nicht nocheinmal ausgewertet.
+	Es wird mit der Ausführung des Codes nach der Schleife fortgefahren. Das Schlüsselwort hierfür ist \code{break}.	
+\end{description}
+
+Innerhalb des Schleifenkörpers sind beide Schlüsselworte nur innerhalb einer Verzweigung sinnvoll.
+Das folgende Beispiel zeigt die Verwendung von \code{continue} und \code{break}.
+
+\begin{src}
+int a = 3;
+int b = 5;
+for (int i = 0; i < 12; i++)
+{
+  if (a > i)
+  { 
+    continue; 
+  }
+  if (b < i)
+  { 
+    break;
+  }
+}
+\end{src}
+
+\pagebreak\sect{subprog}{Unterprogramme}
+
+\end{multicols}
+
+\ssect{subprog1}{Deklaration eines Unterprogramms}
+Das folgende Beispiel ist aus den schon gezeigten Code-Teilen zusammengesetzt und
+zeigt exemplarisch das Unterprogramm zur Berechnung des ggT:
+\begin{src}
+int ggT(int A, int B)
+{
+  int E = 0;      // Initialisierung der Variable E
+  while (A != B)  // Solange A ungleich B ist wird die Schleife ausgeführt.
+  {
+    if (A > B)    // Verzweigung, abhängig von Bedingung: Ist A größer B?                
+    {
+      E = A - B;  // Block der ausgeführt wird wenn A größer B
+      A = E;      
+    }
+    else
+    {
+      E = B - A;  // Block der ausgeführt wird wenn A NICHT größer B
+      B = E;      
+    }
+  }
+  // Wenn wir hier hinter der Schleife ankommen
+  // dann ist A nicht mehr ungleich B also 
+  // A ist gleich B und wir haben den ggT gefunden.	
+  return A; //Rückgabe eines der beiden gleichen Werte als ggT
+}
+\end{src}
+
+\begin{multicols}{2}
+
+Jedes Unterprogramm hat einen Namen über den es aufgerufen werden kann. Bei der Deklaration eines Unterprogramms
+wird zuerst der Datentyp der Rückgabe angegeben, dann der Namen eines Unterprogramms und dann in runden Klammern
+eine Liste von Parametern.
+\begin{src}
+int ggT(int A; int B)
+\end{src}
+Bedeutet also, es gibt ein Unterprogramm mit dem \emph{Namen} \code{ggT}. Dieses Programm \emph{gibt}, wenn man es aufruft eine
+Ganzzahl (\code{int}) \emph{zurück}. Beim Aufrufen des Programmes müssen zwei Ganzzahlen (\code{int}) als \emph{Parameter} übergeben
+werden, die dann im Programm über die Variablennamen \code{A} und \code{B} verwendbar sind. 
+Im Programm erfolgt dann die Berechnung des ggT von \code{A} und \code{B}. In der letzten Zeile des Programms wird 
+mit dem Schlüsselwort \code{return} das Ergebnis zurückgegeben, d.h. das Programm, das dieses Programm aufgerufen hat, bekommt das 
+Ergebnis zurückgemeldet und sollte es dann mittels einer Zuweisung in einer Variablen abspeichern.
+
+\pagebreak\ssect{subprog2}{Aufruf eines Unterprogramms}
+Das Aufrufen eines Unterprogramms erfolgt in einer Zuweisung. Der Rückgabewert des Programms wird dabei in einer Variablen gespeichert.
+Das folgende Programm ruft das eben vorgestellte Programm \code{ggT} auf.
+\begin{src}
+void main()
+{
+  int X = 25;
+  int Y = 15;
+  int Z = 0;
+  Z = ggT(X,Y);	
+}
+\end{src}
+
+In dem Programm werden drei Ganzzahl-Variablen (\code{X,Y,Z}) deklariert und initialisiert. In der letzten Zeile erfolgt dann der Aufruf
+des Unterprogramms in einer Zuweisung. Links des Zuweisungsoperators (Gleichzeichen) steht die Variable \code{Z}, d.h. in dieser Variablen
+wird das abgespeichert, was am Ende des Programmablaufes mit \code{return} zurückgegeben wird.
+Als Parameter werden \code{X} und \code{Y} übergeben. Egal wie diese Variablen hier heißen, im Programm ggT landet der Wert aus dem ersten
+übergebenen Parameter in \code{A} und der zweite in \code{B}.
+
+
+
+
+
+

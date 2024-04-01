@@ -1,0 +1,259 @@
+\chap{Prog}{Eine (sehr) kurze Einführung in die Programmierung}
+
+In der digitalen Welt werden verschiedene Geräte miteinander gekoppelt und können so miteinander interagieren. Also z.B. der sog. Intelligente Kühlschrank, der feststellt, dass die Milch leer oder schlecht ist und dann eine entsprechende Nachricht verschickt. Dazu müssen diese Geräte ein Verhalten haben und das muss programmiert werden. Warum das digital geschieht und ob alles, was so ein einfaches Verhalten hat, auch intelligent oder smart ist, wird in den späteren Kapiteln noch behandelt. Zum Einstieg folgt hier eine Einführung in die Programmierung, die sich auf die Teile beschränkt, die wir brauchen um erste Sketches (so heißen bei Arduino die Programme) schreiben zu können. Wenn im Laufe des Kurses noch weitere Elemente gebraucht werden, werden diese als Exkurs eingeführt. Wer gleich loslegen will, kann auch mit \refsec{eigenes} beginnen und später nochmal hier nachschauen, wenn etwas unklar ist.
+
+
+\sect{algo}{Algorithmus, Variable und Fluss}
+Zu Beginn ein Hinweis: Ein Computer besitzt keine Intelligenz, er ist eine einfache Maschine, die Hintereinander eine Reihe von Anweisungen, die Befehle genannt werden, abarbeitet. Das wiederum machen die heutigen Rechner sehr schnell, so dass man durch geschickte Programmierung sehr komplexes Verhalten erzeugen kann.
+
+\ssect{turtle}{Beispiel TurtleBot}
+
+\fig{turtlebot}{turtlebot}{Ein einfacher TurtleBot aus Lego}
+
+Ein einfaches Beispiel hierfür ist ein sog. Turtle-Bot.
+
+In \reffig{turtlebot} kann man ein Beispiel eines solchen Roboters sehen. Der Roboter kann seine Räder vorwärts und rückwärts drehen und hat einen Sensor, der ausgelöst wird, wenn der Roboter auf ein Hindernis stößt. 
+\vfill\null\pagebreak
+Wenn ein solcher Roboter den Ausgang aus einem rechteckigen Raum finden soll, dann könnte man das Programmieren, indem man dem Roboter die folgenden 
+Anweisungen gibt:
+\begin{itemize}
+\item Fahre Vorwärts (beide Räder vorwärts), bis Du auf ein Hindernis stößt (Sensor löst aus)
+\item Fahre kurz Rückwärts (beide Räder Rückwärts)
+\item Drehe dich etwas (rechtes Rad vorwärts, linkes Rad rückwärts)
+\item Fange vorne wieder an
+\end{itemize}
+\vfill\null\columnbreak
+
+Mit diesen Anweisungen würde der Roboter den Ausgang aus einem rechteckigen Raum finden. Wie man in 
+\reffig{TurtleBotRaum} beispielhaft sieht, ist der Weg nicht der direkte oder besonders elegant, aber im Rahmen seiner Möglichkeiten löst er das Problem. 
+(In diesem einfachen Beispiel allerdings ohne es zu merken, weil es keinen Anweisung zum Aufhören gibt.)
+
+\bigfig{TurtleBotRaum}{TurtleBotRaum}{Beispiele für den Fahrweg eines einfachen TurtleBots beim Verlassen eines Raumes}
+
+
+Das einfache Beispiel zeigt, ein grundsätzliches Konzept der Programmierung, das bei der Abarbeitung der Befehle, also dem Ablauf oder Fluss des Programmes 
+wichtig ist, die sog. \term{Flusskontrolle}. Der Roboter könnte das Problem nicht allgemein (also für alle rechteckigen Räume) lösen, wenn wir ihm Anweisungen 
+in der Form: 
+\begin{itemize}
+\item Fahre 20cm vorwärts
+\item Drehe um 12 Grad nach rechts
+\item Fahre 40cm vorwärts
+\item ...
+\end{itemize}
+geben würden, so würde er ja nur von einer bestimmten Stelle in einem bestimmten Raum den Ausgang finden. Statt dessen haben wir vorgegeben, dass etwas 
+getan werden muss, wenn etwas anderes eingetreten ist und wir haben vorgegeben, dass das Ganze wiederholt werden muss.
+Das sind die zwei Elemente der Flusskontrolle: \term{Verzweigungen} und \term{Schleifen}.
+Für beide gilt: Wir brauchen eine Bedingung, also eine Aussage, die \texttt{\textbf{wahr}} oder \texttt{\textbf{falsch}} ist, also in diesem Fall: 
+Zeigt der Sensor an, dass ein Hindernis erreicht wurde? Wenn das \texttt{\textbf{wahr}} ist, wird die nächste Anweisung (Rückwärtsfahren) ausgeführt, 
+wenn nicht, dann bleibt es beim Vorwärtsfahren.
+Eine solche Auflistung von Verhaltensweisen also vorgeschriebenen Handlungen nennt man auch eine Handlungsvorschrift und eine Handlungsvorschrift zur Lösung 
+eines Problems oder einer Klasse von Problemen (also ähnlichen Problemen) nennt man \term{Algorithmus}. Damit ein Computer so einen Algorithmus ausführen kann, 
+muss dieser eindeutig beschrieben sein. Zur Beschreibung eines Algorithmus verwendet man sog. \term{Höhere Programmiersprachen}, das sind Sprachen, die mit 
+den von Menschen lesbaren Buchstaben geschrieben werden und einem sehr stark vorgegeben Aufbau folgen. Diesen nennt man \term{formale Syntax}. 
+Meistens wird der Programmcode einfach in Textdateien abgespeichert und dann mit einem Compiler oder Interpreter eingelesen \seeexcursus{ausfuehren}. 
+
+Aussagen, die in einer solchen Sprache formuliert sind, sind eindeutig und lassen keinen Interpretationsspielraum zu. Daher sind diese Sprachen gut zum 
+eindeutigen Beschreiben von Vorgängen geeignet. 
+Wie in gesprochenen Sprachen werden dazu bestimmten Wörtern Bedeutungen zugeordnet. Lernt man eine Fremdsprache, muss man daher Vokabeln lernen. In Programmiersprachen nennt man diese Wörter \term{reservierte Wörter} oder \term{Schlüsselwörter}. Diese müssen ähnlich wie Vokabeln gelernt werden, es sind aber sehr viel weniger. In C++ gibt es 52 Schlüsselwörter während der Grundwortschatz Englisch für Level A2 (Elementare Sprachverwendung) schon 4000 Worte und Redewendungen umfasst.
+
+\ssect{ggt}{Beispiel: Größter gemeinsamer Teiler}
+Neben den Elementen zur Flusskontrolle und der dazu notwendigen Beschreibung von Bedingungen, enthalten diese Programmiersprachen auch noch Elemente zur
+Beschreibung von Rechnungen. Dazu ein weiteres Beispiel: Ein sehr alter und bekannter Algorithmus ist der euklidische Algorithmus zur Berechnung des größten
+gemeinsamen Teilers zweier natürlicher Zahlen. Der größte gemeinsame Teiler zweier ganzer Zahlen ist die größte natürliche Zahl, durch die beide Zahlen ohne Rest teilbar sind.
+Zur Herleitung stellen wir uns die beiden Zahlen als Stäbe vor, die Länge des Stabes repräsentiert dabei jeweils den Wert der Zahl:
+
+\figinline{ggt1}{ggt1}
+
+\vfill\null\pagebreak
+Dann müssten beide Zahlen ohne Reststück in kürzere, gleichlange Klötzchen zerlegbar sein:
+
+\figinline{ggt2}{ggt2}
+
+Wir suchen jetzt also die Länge des größtmöglichen Klötzchens in das beide Stäbe zerlegbar sind.
+
+Schaut man sich die folgende Skizze an, dann sieht man, dass nicht nur die beiden Zahlen, sondern auch das Stück, 
+das übersteht, aus dem gesuchten Klötzchen zusammensetzbar sind.
+
+\figinline{ggt3}{ggt3}
+
+Übertragen auf den Zahlenwert, ist dieser Überstand die Differenz zwischen den beiden Zahlen, also das, was rauskommt, wenn man von der größeren Zahl die 
+kleinere Zahl abzieht.
+
+\figinline{ggt4}{ggt4}
+
+Wenn man jetzt mit der kleineren Zahl und diesem Reststück weiterarbeitet, bleibt irgendwann als Überstand genau das gesuchte Klötzchen übrig:
+
+\figinline{ggt5}{ggt5}
+
+Wenn beide Reststücke gleich groß sind, dann hat man den ggT gefunden.
+\vfill\null\columnbreak
+
+Die Vorschrift zur Berechnung des ggT könnte also lauten:
+\begin{enumerate}
+\item Sind beide Zahlen gleich, dann ist dies der ggT.
+\item Ziehe die kleinere von der größeren Zahl ab!
+\item Verwende das Ergebnis und die kleinere Zahl als Zahlen!
+\item Fange von vorne an!
+\end{enumerate}
+
+Man erkennt sofort die Flusskontrolle mit der Schleife und der Beschreibung einer Bedingung dafür, dass der ggT gefunden worden ist. 
+Diese Bedingung nennt man \term{Abbruchbedingung einer Schleife.}
+
+Zur besseren Übersicht kann man diesen Algorithmus in einem Ablaufplan darstellen. \reffig{ggtPlan1} zeigt diesen Algorithmus als Ablaufplan. Jede Anweisung ist dabei in einem Kästchen eingetragen. Verzweigungen sind als Raute dargestellt und Rechenanweisungen als Rechtecke. Start und Ende sind an der Seite rund. Die Schleife ergibt sich daraus, dass von der untersten Anweisung aus der Pfeil wieder zur ersten Anweisung führt.
+
+\bigfig{ggtPlan1}{ggtPlan1}{Ablaufplan des Algorithmus}
+
+Im Gegensatz zum ersten Beispiel wird hier gerechnet (Schritt \step{2}). Wenn wir das mit unserer Intelligenz im Kopf machen, dann passiert das ganz automatisch. 
+Ein Computer kann das nicht, der kann nur eindeutig beschriebene Algorithmen abarbeiten und dazu müssen die Werte, mit denen gerechnet wird, gespeichert werden.
+Dies geschieht in sog. Variablen und Parametern, die genauso funktionieren, wie man es aus der Mathematik kennt. 
+Wenn es dort eine Funktion in der Form $f(x)=x+42$ gibt, dann rechnet man den Wert der Funktion für eine bestimmte Stelle z.B. $f(2)$ aus, indem man für die
+Variable $x$ eine $2$ einsetzt, dann nach der Vorschrift die $42$ addiert und so den Funktionswert $44$ erhält. Der Mathematiker schreibt dann $f(2)=44$ 
+und sagt: “$f$ von $2$ ist $44$”. Da das $x$ in der Klammer hinter dem Funktionsnamen steht, bezeichnet man es als Parameter. 
+Variablen sind also Platzhalter für Zahlen und Parameter sind Variablen, deren Wert von außen vorgegeben wird. 
+In der Mathematik nennt man das: \textit{Einen Wert in eine Funktion einsetzen} und bei der Programmierung sagt man: 
+\textit{Der Funktion wird ein Parameter übergeben.}
+Außerdem können beim Programmieren nicht nur Zahlen, sondern auch z.B. Zeichenketten vorkommen, so dass man nicht mehr vom Platzhalter für Zahlen, 
+sondern allgemein für Daten spricht. Eine Variable ist also ein Platzhalter für ein Datum und hat in einer höheren  Programmiersprache einen Namen.
+
+Schauen wir uns die Vorschrift nochmal an:
+\begin{enumerate}
+\item Sind \textbf{beide Zahlen} gleich, dann ist dies der ggT.
+\item Ziehe die \textbf{kleinere} von der \textbf{größeren} Zahl ab!
+\item Verwende \textbf{das Ergebnis} und die \textbf{kleinere Zahl} als Zahlen!
+\item Fange von vorne an!
+\end{enumerate}
+
+Jetzt sieht man, dass es hier um mehrere Zahlen geht und dass diese hier über ihre Eigenschaft beschrieben werden (Ergebnis, kleinere und größere Zahl). 
+Für das Schreiben eines Algorithmus müssen wir jetzt Variablen und Parameter mit Namen einführen, so dass wir damit rechnen können. 
+Das nennt man \textit{Deklaration einer Variablen}. 
+Dazu gehört immer der Name der Variablen und in den meisten Programmiersprachen auch welche Art von Datum da abgespeichert werden soll. 
+In diesem Beispiel also ganze Zahlen.
+
+In \reffig{ggtPlan2} wurden für die beiden Zahlen die Parameter \code{A} und \code{B} eingeführt. Außerdem gibt es noch eine Variable \code{E} 
+für das Zwischenergebnis. 
+Die erste Verzweigung \step{1} ist schon bekannt, hier wird geprüft ob beide Zahlen gleich sind. Dazu wird jetzt nur noch die Bedingung in die Raute geschrieben. \code{A==B} bedeutet, dass die Werte der Variablen verglichen werden und die Bedingung \code{wahr} ist, wenn diese gleich sind.
+Die nächst Verzweigung \code{2} ist notwendig, weil der Computer eine exakte Beschreibung des Vorgehens braucht und wir bei der Aussage: 
+\textit{Ziehe die kleinere von der größeren Zahl ab!}
+im Kopf zwei Dinge machen: Zuerst bestimmen wir die größere Zahl und dann ziehen wir davon die andere ab. In \step{2} wird also erstmal geprüft, 
+ob \code{A} größer als \code{B} ist; die Bedingung dafür lautet \code{A>B}.
+
+Wenn das der Fall ist, wird bei \step{3a} weitergemacht. Aus der Anweisung \textit{Ziehe die \textbf{kleinere} von der \textbf{größeren} Zahl ab!} 
+wird jetzt \code{A-B}, da wir gerade festgestellt haben, dass \code{A} die größere Zahl sein muss. In \step{3a} sieht man eine sog. Zuweisung 
+\code{E=A-B} bedeutet, dass der Wert, der sich aus der Rechnung \code{A-B} ergibt in die Variable \code{E} gespeichert wird. 
+Man sagt: \textit{Der Wert von \code{A-B} wird der Variable \code{E} zugewiesen. }
+
+\emph{Bitte darauf achten, dass immer von ‘rechts nach links’ zugewiesen wird, d.h. das Ziel steht links vom Gleichzeichen.}
+
+Danach wird in \step{3b} der Wert aus der Varialbe \code{E} der Variable \code{A} zugewiesen. Das A steht links. 
+Dieser Schritt ist die Umsetzung der Anweisung: \textit{Verwende \textbf{das Ergebnis} und die \textbf{kleinere Zahl} als Zahlen!} 
+Da es im nächsten Schritt von vorne losgehen soll, müssen also jetzt die kleinere Zahl und das Ergebnis in den Variablen \code{A} und 
+\code{B} landen. Und da \code{B} hier die kleinere Zahl ist, speichern wir einfach das Ergebnis der Subtraktion aus der Variable \code{E}
+in die Variable \code{A} um dann mit den beiden neuen Zahlen wieder von vorne zu beginnen \step{5}.
+Für den Fall, dass sich in \step{2} ergibt, dass \code{B} die größere Zahl ist, werden die Schritte \step{3b} und \step{4b} ausgeführt. 
+Es wird also \code{A} von \code{B} abgezogen.
+
+\bigfig{ggtPlan2}{ggtPlan2}{Ablaufplan des Algorithmus mit Parametern und Variablen}
+
+\vfill\null\pagebreak
+\sect{zsm}{Zusammenfassung}
+In den letzten Abschnitten wurde dargestellt, dass man zum Programmieren nur die folgenden Elemente braucht:
+\begin{itemize}
+  \item Flusskontrolle
+  \begin{itemize}
+    \item Verzweigung
+    \item Schleife  
+    \item Eine Möglichkeit Bedingungen eindeutig zu formulieren
+	\end{itemize}
+	\item Zuweisungen
+  \begin{itemize}
+	  \item Deklaration von Variablen
+    \item Eine Möglichkeit Rechenterme eindeutig zu formulieren
+	\end{itemize}
+\end{itemize}
+
+
+Damit man in seinen Programmen die Übersicht behält, stellen die meisten Programmiersprachen noch Elemente zur Beschreibung von Unterprogrammen bereit. 
+Diese Unterprogramme können ein Ergebnis zurückgeben, so wie es im vorangegangenen Beispiel zum ggT zu sehen ist. 
+Folgende zusätzliche Elemente sind dazu notwendig:
+\begin{itemize}
+  \item Flusskontrolle (Unterprogramme)
+  \begin{itemize}
+	  \item Deklaration des Namens eines Unterprogramms
+    \item Deklaration von Parametern zur Übergabe von Daten an das Unterprogramm \seefig{ggtPlan2} \code{Start}
+    \item Deklaration der Art der Rückgabe (z.B. eine Zahl)
+    \item Ausführen der Rückgabe \seefig{ggtPlan2} \step{6}
+	\end{itemize}
+	\item Zuweisungen (Unterprogramm)
+  \begin{itemize}	
+    \item Aufruf eines Unterprogramms
+	\end{itemize}
+\end{itemize}
+\vfill\null\columnbreak
+Da das Ausführen eines Unterprogramms ähnlich wie eine Schleife oder Verzweigung den Ablauf des Programms steuert, gehören diese Elemente zur 
+\textbf{Flusskontrolle}.
+Da ein Unterprogramm genau wie eine Berechnung ein Ergebnis zurückgibt und dieses in der Regel in einer Variablen gespeichert werden soll, sind Aufrufe von Unterprogrammen in den meisten Programmiersprachen als \textbf{Zuweisungen} dargestellt. 
+
+\begin{anotation}
+Neben der hier vorgestellten ablauforientierten Darstellung von Programmen, gibt es noch andere, die für bestimmte Aufgabenstellungen einfacher oder 
+übersichtlicher sind. In diesem Kurs wird z.B. noch die objekt-orientierte Programmierung vorgestellt. Es gibt aber auch Programmiersprachen, 
+die nicht als Text sondern graphisch definiert sind. Allen gemeinsam ist, dass zur Ausführung auf dem Rechnes am Ende ein Programm erzeugt wird, 
+bei dem Anweisungen nacheinander abgearbeitet werden.
+\end{anotation}
+
+
+\end{multicols}
+\pagebreak\begin{excursus}{ausfuehren}{Programm ausführen}
+Dieser Exkurs soll einen kurzen Überblick darüber geben, wie Programme auf einem Computer ausgeführt werden. 
+Dazu braucht man ein paar Begriffsdefinitionen und deren Zusammenhänge:
+
+\begin{definition}{prog}{Programm}
+Als Programm bezeichnet man die Beschreibung eines Algorithmus oder eine Reihe von Algorithmen in einer formal beschriebenen Sprache (Programmiersprache), 
+die dazu dienen eine bestimmte Aufgabe zu unterstützen, wenn sie auf geeigneten Rechnern ausgeführt werden.
+\end{definition}
+
+\begin{definition}{instruction}{Maschinenbefehl}
+Jeder Prozessor verfügt über eigene Befehle, die er abarbeiten kann.
+Diese nennt man auch Maschinenbefehle.
+Die Menge aller Befehle, die ein Prozessor verarbeiten kann, nennt man \term{Befehlssatz}.
+Die Programmiersprache des Prozessors, die aus diesen Befehlen zusammengesetzt ist,
+nennt man auch \term{Maschinensprache}, \term{Maschinencode} oder \term{nativen Code}.
+\end{definition}
+
+Üblicherweise werden die Befehle im Arbeitsspeicher abgelegt und hintereinander abgearbeitet.
+Es sei denn, der Befehl ist ein Sprung, der angibt, dass woanders weitergearbeitet werden soll.
+
+Beispiel für diese Befehle sind:
+\begin{itemize}
+	\item Lesen von Daten aus dem Arbeitsspeicher
+	\item Schreiben von Daten in den Arbeitsspeicher
+	\item Ausführung elementarer arithmetischer und logischer Operationen
+  \begin{itemize}
+    \item Addition
+		\item Subtraktion
+		\item Und-Verknüpfung
+		\item …
+  \end{itemize}	
+	\item Sprung (Fortsetzung der Verarbeitung an einer bestimmten anderen Stelle)
+\end{itemize}
+
+\begin{definition}{hpl}{Programmiersprache}
+Allgemein bezeichnet man Sprachen zur Formulierung von Rechenvorschriften, 
+die von einem Computer ausgeführt (interpretiert) werden können, als \term{Programmiersprache}. 
+Auch die Maschinensprache ist also eine Programmiersprache. Leider ist sie für den Menschen sehr schwer verständlich,
+weil die Befehle sehr kleine Verarbeitungsschritte beschreiben.
+Deshalb hat man die sog. \term{Höheren Programmiersprachen} entwickelt. Diese werden auch als problemorientierte Programmiersprachen 
+bezeichnet und mit ihnen lassen sich Programme auf höherem (also abstrakterem) Niveau als Maschinensprache beschreiben.
+Sie sind für Menschen einfacher verständlich. Allerdings  braucht man zunächst ein weiteres Programm,
+dass die in der höheren Programmiersprache geschriebenen Programme interpretiert und umsetzt.
+\end{definition}
+
+Es gibt zwei Arten der Umsetzung: \term{Interpreter} und \term{Compiler}:
+\begin{description}
+	\item[Interpreter] Umsetzer, der schrittweise nur einen Programmschritt nach dem anderen interpretiert und dann direkt ausführt
+	\item[Compiler] Übersetzer, der ein komplettes Programm in Maschinensprache übersetzt und nicht zur Ausführung bringt (z.B.: ein test.exe erzeugt)
+\end{description}
+
+\end{excursus}
+
+\begin{multicols}{2}
+

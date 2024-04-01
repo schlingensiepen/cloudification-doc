@@ -1,0 +1,968 @@
+\chap{eigenes}{Ein eigenes Programm schreiben}
+
+\sect{myBlink}{Analyse von myBlink.ino}
+Das Programm beginnt mit einem mehrzeiligen Kommentar in dem beschrieben ist, was das Programm bei Ausführung machen wird.
+
+\begin{src}
+/*
+  Blink
+  Let a LED on Port D5 blink.
+
+  Sample by Joern Schlingensiepen
+*/
+\end{src}
+
+Anschließend kommt ein sog. Definitionsblock. Hier wird festgelegt, dass überall, wo im Quelltext das Wort LED vorkommt,
+das Wort D5 eingefügt werden soll. D5 ist eine vorgegebene Konstante für den Pin D5, an dem die LED angeschlossen ist. 
+Durch den Definitionsblock am Anfang kann man das Programm später leichter anpassen.
+
+\begin{src}
+#define LED D5
+\end{src}
+
+Dann folgt ein Unterprogamm ohne Parameter mit den Namen \code{setup}. Per Definition startet der MCU dieses Programm
+direkt nachdem er gestartet wurde.
+
+
+\begin{src}
+// the setup function runs once when 
+// you press reset or power the board
+void setup() {
+  // initialize digital pin 
+  //LED as an output.
+  pinMode(LED, OUTPUT);
+}
+\end{src}
+
+In \code{setup} wird das Programm \code{pinMode} aufgerufen. Diese Programm legt für einen Pin fest, ob der Pin als Ausgang
+zum Schalten oder als Eingang zum Einlesen von Information genutzt werden soll. Es bekommt als ersten Parameter die Nummer des Pins,
+hier also die in D5 gespeicherte Konstante, die für \code{LED} eingesetzt wird und als zweiten Parameter die Richtung \code{OUTPUT}
+steht für Ausgang und \code{INPUT} stände für Eingang.
+
+Dann folgt ein weiteres Unterprogramm ohne Parameter mit den Namen \code{loop}. Per Definition startet der MCU dieses Programm
+immer wieder neu, so dass es faktisch um eine Endlosschleife handelt. In diesem Programm muss die komplette Funktion der MCU 
+implementiert werden.
+
+\begin{src}
+// the loop function runs over 
+// and over again forever
+void loop() {
+  // turn the LED on by making 
+  // the voltage HIGH
+  digitalWrite(LED, HIGH);   
+  // wait for a second
+  delay(1000);               
+  // turn the LED off by making 
+  // the voltage LOW
+  digitalWrite(LED, LOW);    
+  // wait for a second
+  delay(1000);               
+}
+\end{src}
+
+Die \code{loop} ist recht einfach gehalten. Zuerst wird das Programm \code{digitalWrite} aufgerufen, es setzt den Zustand eines als
+Ausgang konfigurierten Pins. Dazu bekommt es als ersten Parameter die Nummer des Pins,
+hier also wieder die in D5 gespeicherte Konstante, die für \code{LED} eingesetzt wird und als zweiten Parameter den Wert, der am
+Pin angelegt werden soll, hier also \code{HIGH} für Spannung hoch. Nach dem Ausführen dieser Code-Zeile sollte die LED leuchten.
+Als nächstes wird das Programm \code{delay} aufgerufen, das einfach nur wartet. Als Parameter wird diesem Programm die Anzahl der
+Millisekunden, die gewartet werden soll, übergeben. Für eine Sekunde also der Wert 1000. Während der Prozessor wartet, bleibt der
+Wert am Pin D5 konstant, also auf \code{HIGH}.
+Dann wird wieder \code{digitalWrite} aufgerufen. Diesmal mit dem zweiten Parameter \code{LOW} für Spannung 0. Ist dieser Punkt der
+Programmausführung erreicht, sollte die LED aus sein. Anschließend wird wieder gewartet, die LED bleibt währenddessen aus.
+Da die \code{loop} immer wieder ausgeführt wird, startet die Ausführung wieder oben im Programm mit dem Aufruf von \code{digitalWrite},
+der die LED wieder einschaltet. Als Ergebnis blinkt die LED.
+
+\begin{excercise}{e0}{Langsamer}
+Pass das Programm \gitHub{myBlink.ino} so an, dass die LED langsamer blinkt.
+\end{excercise}
+
+
+\newpage\sect{hw2}{Hardwareaufbau \#2}
+%
+\bigfig{hw2}{TestaufbauZweiLEDSteckplatine}{Schematische Darstellung des zweiten Aufbaus}%
+%
+
+Für die nächsten Versuche erweitern wir den Aufbau. In \reffig{hw1} ist dargestellt, wie der erweiterte Aufbau aussieht. 
+\begin{excercise}{e1}{Aufbau 2}
+Bau die im Schema \seefig{hw2} dargestellte Schaltung auf!
+\end{excercise}
+
+\begin{excercise}{e2}{Abwechselnd}
+Pass das Programm \gitHub{myBlink.ino} so an, dass die zwei LEDs abwechselnd blinken. Die Lösung findest Du in \gitHub{myBlink1.ino}.
+\end{excercise}
+
+\begin{excercise}{e3}{Fade}
+Lade das Programm \gitHub{myFade.ino} und starte es. Dieses Programm nutzt das Programm \code{analogWrite(LED1, brightness)}
+überlege mit Deinem Arbeitspartner, was diese Programm macht und wie das Programm \gitHub{myFade.ino} funktioniert.
+\end{excercise}
+
+\newpage\sect{hw3}{Hardwareaufbau \#3}
+%
+\bigfig{hw3}{TestaufbaumitKnoepfenSteckplatine}{Schematische Darstellung des dritten Aufbaus}%
+%
+Für die nächsten Versuche erweitern wir den Aufbau. In \reffig{hw1} ist dargestellt, wie der erweiterte Aufbau aussieht. 
+Dazu werden zwei Taster eingebaut und mit dem Plus-Leiter verbunden. So liegt an den Pins D1 und D2 jeweils Plus an,
+wenn der entsprechende Taster gedrückt wird. Damit bei nicht gedrücktem Schalter auch wirklich 0 an den Pins anliegt,
+wird noch ein vergleichsweise großer Widerstand (10k$\Omega$) eingebaut. Über diesen Widerstand fließt, wenn geschaltet wird,
+nur ein sehr kleiner Strom.
+\begin{excercise}{e31}{Aufbau 3}
+Bau die im Schema \seefig{hw3} dargestellte Schaltung auf!
+\end{excercise}
+
+\begin{excercise}{e32}{Schalten}
+Lade das Programm \gitHub{myButton1.ino} und führe es aus.
+\end{excercise}
+
+Im Programm \gitHub{myButton1.ino} finden sich neue Konstrukte:
+
+\begin{src}
+void setup() {
+  // initialize the LED pins 
+  // as an output:
+  pinMode(ledPin, OUTPUT);
+  // initialize the pushbutton 
+  // pins as an input:
+  pinMode(buttonPin, INPUT);
+}
+\end{src}
+
+In \code{setup} wird das Programm \code{pinMode} mit dem Parameter \code{HIGH} aufgerufen,
+so dass der Pin mit dem Taster als Eingang fungiert.
+
+\vfill\null\pagebreak
+
+\begin{src}
+void loop() {
+  // read the state of the pushbutton value:
+  buttonState = 
+    digitalRead(buttonPin);
+  // check if the pushbutton is pressed. 
+  // If it is, the buttonState is HIGH:
+  if (buttonState == HIGH) {
+    // turn LED on:
+    digitalWrite(ledPin, HIGH);
+  } else {
+    // turn LED off:
+    digitalWrite(ledPin, LOW);
+  }
+}
+\end{src}
+
+In \code{loop} wird das Programm \code{digitalRead} aufgerufen.
+Es gibt den Zustand eines Eingangspins zurück, der dann in der
+Variablen \code{buttonState} abgelegt wird.
+Dann folgt eine Verzweigung mit der Bedingung \code{buttonState == HIGH},
+es wird also geprüft, ob der Taster gedrückt war.
+Wenn er gedrückt war, dann wird die LED eingeschaltet. Ist er nicht 
+gedrückt, dann wird sie ausgeschaltet.
+Da \code{loop} immer wieder und sehr schnell ausgeführt wird, bleibt die
+LED immer so lange angeschaltet, wie der Taster gedrückt ist. Denn
+nach dem Loslassen des Tasters wird im nächsten Durchlauf von \code{loop}
+der \code{buttonState} zu \code{LOW} und es wird der \code{else}-Zweig der
+Verzweigung durchlaufen und dort wird die LED ausgeschaltet.
+
+
+\begin{excercise}{e33}{Zweimal Schalten}
+Passe das Programm \gitHub{myButton1.ino} so an, dass beim Drücken des
+zweiten Tasters die zweite LED leuchtet. Eine Lösung findest Du in
+\gitHub{myButton2.ino} 
+\end{excercise}
+
+\sect{zst}{Zustände}
+Das Programm \gitHub{myButton3.ino} erweitert die Funktion so, 
+dass nach Drücken und Loslassen des Tasters die LED dauerhaft angeschaltet ist.
+Drückt man nochmal und lässt wieder los, dann wird sie wieder ausgeschaltet.
+
+In dem Programm wird dazu eine Variable angelegt, in der der Zustand des System 
+abgespeichert werden kann, so dass sich das System beim nächsten Durchlauf der \code{loop}
+entsprechend verhalten kann.
+
+\begin{src}
+enum ledAutomatStateType
+{
+  pressedToOn,
+  pressedToOff,
+  lightOn,
+  lightOff
+};
+ledAutomatStateType 
+  ledAutomatState 
+    = lightOff;
+\end{src}
+
+In der \code{loop} wird dann je nach letztem Zustand entsprechend die LED ein- oder ausgeschaltet.
+
+\begin{excercise}{e34}{Umschalten}
+Lade das Programm \gitHub{myButton3.ino}, führe es aus und schaue Dir das Programm an. 
+Es gibt hier eine neue Art der Flusskontrolle, versuche zu erkennen, wie diese funktioniert und
+diskutiere dies mit Deinem Arbeitspartner.
+\end{excercise}
+
+\vfill\null\pagebreak
+\sect{kom1}{Kommunikation nach außen}
+\bigfig{sermon}{sermon}{Der Serielle Monitor in der ArduinoIDE}
+
+Im Programm \gitHub{myButton4.ino} wird die Funktion um einen Kommunikationskanal erweitert. Im ersten Schritt
+wird dazu das verwendet, was ohnehin schon da ist. Der NodeMCU ist über die virtuelle serielle Schnittstelle
+ohnehin mit dem PC verbunden. Über diese Schnittstelle können Programme, die auf dem NodeMCU und dem PC ausgeführt
+werden, miteinander kommunizieren. Am einfachsten geht dies über den in der ArduinoIDE eingebauten \term{Seriellen Monitor}, 
+\seefig{sermon}, der über \menuii{Werkzeuge}{Serieller Monitor} (\keyiii{Strg}{Umschalt}{M}) gestartet werden kann.
+Unten rechts kann man die Übertragungsgeschwindigkeit einstellen, diese muss gleich der Geschwindigkeit sein,
+mit der man in der Sketch die Schnittstelle ini\-tia\-li\-siert. In den Beispielprogrammen ist das 9600 Baud.
+
+\vfill\null\columnbreak
+\begin{src}
+void setup() {
+  ...
+  // Open internal serial port 
+  // with baud rate 9600
+  Serial.begin(9600);
+}
+\end{src}
+
+Die Initialisierung der Schnittstelle erfolgt in \code{setup} über den Aufruf \code{Serial.begin(9600)}.
+Dabei ist \code{Serial} ein sog. \term{statisches Objekt}, d.h. es ist immer vorhanden und repräsentiert
+in diesem Fall die serielle Schnittstelle zum PC. Alle Funktionen, die ich an
+der Schnittstelle ausführen kann, werden über Programmaufrufe mit vorangestelltem \code{Serial.} ausgeführt.
+\code{Serial.begin} bekommt als Parameter die Geschwindigkeit, mit der die Schnittstelle arbeiten soll, übergeben.
+In diesem Beispiel sind das die schon erwähnten 9600 Baud.
+
+
+\vfill\null\pagebreak
+\begin{src}
+void loop() {
+  Serial.println(
+    "Turned Light on");}
+\end{src}
+
+In der \code{loop} findet sich ein Aufruf von \code{Serial.println}. Am vorangestellten \code{Serial.} erkennt man,
+dass das Programm etwas mit der seriellen Schnittstelle machen soll. In diesem Fall sendet es die als 
+Parameter übergebenen Zeichenkette zum PC.
+
+\begin{excercise}{e38}{Umschalten}
+Lade das Programm \gitHub{myButton4.ino}, führe es aus und starte den Seriellen Monitor.
+Schaue Dir an, wie sich das Programm verhält und versuche dann, den Quellcode nachzuvollziehen.
+\end{excercise}
+
+\sect{kom2}{Kommunikation von außen}
+Im Programm \gitHub{myButton5.ino} wird die Funktion um einen Rückkanal erweitert.
+
+\begin{src}
+void loop() {
+  ...
+  // check if chars in serial buffer
+  if (Serial.available() != 0) 
+  {
+    // read the string
+    String input = 
+      Serial.readString();
+    // converts to integer, 
+    // return 0 on conversion error
+    int value = input.toInt();
+    if (value >= 0 && 
+      value <= 255)
+    {
+      analogWrite(
+        ledPin1, value);
+      Serial.print(
+        "Set Light to ");
+      Serial.println(value);
+    }
+  }
+  ...
+}
+\end{src}
+
+Der ESP-12 legt alles, was über die serielle Schnittstelle eingeht in einem internen Puffer ab.
+Der Aufruf von \code{Serial.available} prüft, ob in diesem Puffer etwas abgelegt ist.
+Als Rückgabe bekommt man wahr oder falsch, also genau das, was man für eine Verzweigung braucht.
+Wenn da Daten liegen, dann sollen diese verarbeitet werden, wenn nicht, wird nichts gemacht. 
+Da die \code{loop} immer wieder aufgerufen wird, kann man davon ausgehen, dass relativ schnell
+wieder geprüft wird, ob Daten eingegangen sind.
+
+Der Aufruf von \code{Serial.readString} liest die eingegangenen Daten aus dem Puffer aus und 
+gibt diese als Zeichenkette zurück. In dem Beispiel wird diese Zeichenkette der Variablen 
+\code{input} zugewiesen, diese ist vom Typ \code{String}.
+
+Der Aufruf \code{input.toInt} wandelt die Zeichenkette in eine Ganzzahl um. Hier sieht man wieder
+an der Schreibweise mit den vorangestellten \code{input.}, dass mit dem Inhalt der Zeichenkette
+gearbeitet werden soll. Die Umwandlung ist notwendig, weil wir über die Tastatur keine Zahlen,
+sondern Buchstaben eingeben. Die Zeichenkette \code{\"156\"} ist einfach nur eine Aufreihung der 
+Buchstaben \code{\'1\'}, \code{\'5\'} und \code{\'6\'}. Um damit rechnen zu können muss diese Zeichenkette
+in die Zahl \code{156} umgewandelt werden. An den Datentypen kann man erkennen, dass das eine als 
+\code{String} (Zeichenkette) gespeichert ist, während das andere als \code{int} (Ganzzahl) 
+abgelegt wird. Nach der Umwandlung wird mit \code{analogWrite} die LED auf den eingegebenen Wert gedimmt.
+
+
+\begin{excercise}{e35}{Umschalten}
+Lade das Programm \gitHub{myButton5.ino}, führe es aus und starte den Seriellen Monitor.
+Gib dort Zahlen zwischen 0 und 255 ein und sende diese an den NodeMCU!
+Schaue Dir an, wie sich das Programm verhält und versuche dann den Quellcode nachzuvollziehen.
+\end{excercise}
+\vfill\null\pagebreak
+\begin{excercise}{e36}{Umschalten}
+Lade das Programm \gitHub{myButton6.ino}, führe es aus und starte den Seriellen Monitor.
+Das Programm verhält sich anders, versuche nachzuvollziehen, wie es funktioniert.
+\end{excercise}
+
+
+\chap{internet}{Einbinden ins Netzwerk}
+
+Die Anbindung des NodeMCU an das Internet erfolgt in mehreren Schritten, der erste Schritt ist die 
+Verbindung des MCU mit dem WLAN, zu finden in \gitHub{wifi.ino}. 
+
+
+\sect{libintern}{Einbinden interner Bibliotheken}
+Am Anfang dieses Programms findet sich folgender Eintrag:
+\begin{src}
+#include <ESP8266WiFi.h>
+\end{src}
+
+Damit wird eine sog. \term{Programmbibliothek} (engl. \term{software library}) eingebunden. Da Programme
+sehr schnell sehr groß und unübersichtlich werden können, organisiert man den Quellcode in diesen Bibliotheken.
+Der Vorteil ist, dass man Funktionen, die schon mal jemand implementiert hat, einfach durch Einbinden
+der Bibliothek selber nutzen kann. In diesem Beispiel ist das die Bibliothek, mit der der ESP auf das WLAN zugreifen kann.
+
+\sect{wlan}{Einbinden ins WLAN}
+
+\begin{src}
+const char* ssid 
+  = "digitalisierung";
+const char* pass 
+  = "cloudification";
+
+void setup() {
+  ...
+  WiFi.begin(ssid, pass);
+  while (WiFi.status() 
+    != WL_CONNECTED) 
+  {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println();
+  Serial.println("OK");
+  Serial.print("IP address .: ");
+  Serial.println(WiFi.localIP());
+
+  Serial.print("Strength ...: ");
+  Serial.println(WiFi.RSSI());
+  Serial.println();   
+}
+\end{src}
+
+Ähnlich wie bei der seriellen Schnittstelle gibt es für das WLAN nach dem Einbinden der Bibliothek
+ein statisches Objekt. Dessen Name ist \code{WiFi}. Genau wie die serielle Schnittstelle wird das
+WLAN mit dem Aufruf von \code{begin} gestartet. Als Parameter müssen der Name des WLAN (die \code{ssid})
+und ein Password übergeben werden. Defür wurden am Anfang zwei Zeichenketten als Variablen
+\code{ssid} und \code{pass} initialisiert. Mit den Voreinstellungen verbindet sich der NodeMCU mit 
+dem WLAN-Hotspot für diesen Kurs.
+
+Der Aufruf von \code{status} am \code{WiFi} gibt die Nummer des aktuellen Status des WLAN zurück, 
+die vordefinierte Konstante \code{WL_CONNECTED} zeigt an, dass der NodeMCU mit dem WLAN verbunden ist.
+Die Schleife wird so lange durchlaufen, bis dieser Status erreicht wird, dabei wird jedes mal eine 
+halbe Sekunde gewartet und ein \'.'\ über die serielle Schnittstelle ausgegeben.
+
+Damit man auf dem seriellen Monitor etwas sieht, werden noch mit \code{localIP} die Internet-Adresse des 
+NodeMCU und mit \code{RSSI} die Signalstärke am \code{WiFi} abgefragt und über die serielle Schnittstelle
+ausgegeben.
+
+\pagebreak
+Die \code{loop} ist relativ einfach gehalten:
+\begin{src}
+void loop() {
+  if (WiFi.status() 
+    == WL_CONNECTED)
+  {
+    Serial.print(
+      "Connected to ");
+    Serial.println(
+      WiFi.SSID());
+    Serial.print(
+      "Strength ...: ");
+    Serial.println(
+      WiFi.RSSI());
+  }
+  else
+  {
+    Serial.println(
+      "Connection lost");
+  }
+  delay(1000);
+}
+\end{src}
+In der \code{loop} werden nur jede Sekunde der Name des WLAN und die Signalstärke abgefragt und über die
+serielle Schnittstelle ausgegeben.
+
+\begin{excercise}{e41}{WLAN testen}
+Lade das Programm \gitHub{wifi.ino}, führe es aus und starte den Seriellen Monitor.
+Beobachte was das Programm auf dem Seriellen Monitor ausgibt.
+\end{excercise}
+
+\sect{web}{Verbinden mit einem WebServer}
+
+Das Programm \gitHub{httpClient1} implementiert den Zugriff auf einen Web-Server im Internet.
+
+Dazu wird am Anfang eine zusätzliche Bibliothek eingebunden:
+
+\begin{src}
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+\end{src}
+
+% todo: url, scheme, port
+
+Diese stellt einen Web-Client zur Verfügung, der über das \abbr{h}yper \abbr{t}ext \abbr{t}ransfer \abbr{p}rotocol (\abbr{http})
+Daten vom Web-Servern abrufen kann. Das Protokoll und die Inhalte, die von einem Web-Server zurückgesendet werden, bestehen im wesentlichen aus Text,
+so dass die Rückgabe vom Server über die serielle Schnittstelle ausgegeben und dann gelesen werden kann.
+
+Der übrige Aufbau des ersten Programmteils sieht aus, wie gewohnt, es werden eine Reihe von Konstanten definiert, die für den
+Zugriff auf den Server notwendig sind:
+
+
+Im Gegensatz zum WLAN (\code{WiFi}) oder der seriellen Schnittstelle (\code{Serial}) wird der Web-Client nicht als statisches
+Objekt bereitgestellt. Das ist sinnvoll, weil man ggf. mehrere davon parallel nutzen will. Um trotzdem ein Objekt zu bekommen,
+muss es wie folgt erstellt werden:
+
+\begin{src}
+HTTPClient http;
+\end{src}
+
+Das ist einfach die Deklaration einer Variablen mit dem Namen \code{http}. Diesmal ist aber nicht einfach nur eine Zahl oder 
+eine Zeichenkette darin abgespeichert, sondern ein kompletter Web-Client.
+
+\vfill\null\columnbreak
+Das Programm \code{setup} ist genau so aufgebaut, wie in der letzten Sketch. Es stellt die Verbindung zum WLAN her.
+
+Der Zugriff auf den Web-Server erfolgt in der \code{loop}:
+
+\begin{src}
+void loop() {
+  ...
+  http.begin (host, port, path);
+  int err = http.GET();
+  if (err == 200)
+  {
+    String content = 
+      http.getString();
+    Serial.println(content);
+  }
+  else
+  {
+    Serial.print(err);
+    delay(10000);
+  }
+  Serial.println(
+    "Closing connection");
+  http.end();
+  delay(3000);
+}
+\end{src}
+
+Mit \code{begin} wird der Zugriff auf den Web-Server initialisiert. Dazu werden der Name des Servers
+(\code{host}), ein Port \code{port} und der Pfad \code{path}, auf den innerhalb des Servers zugegriffen werden soll, übergeben.
+Ein Port ist eine Art nummerierte Eingangstür, weil auf einem Rechner mehrere verschiedene Server laufen
+können, z.B. ein Web-Server, ein FTP-Server zum hochladen der Dateien und ein Mail-Server, braucht man eine
+Möglichkeit zu erkennen, mit welchem dieser Server der Client Kontakt aufnehmen möchte. Das erkennt man an
+der Port-Nummer.
+
+Der eigentliche Zugriff auf den Server erfolgt in \code{GET}. Das http kennt nämlich verschiedene Arten des
+Zugriffs auf einen Server, deshalb sind Initialisierung und Zugriff getrennte Programmaufrufe. 
+Der Rückgabewert ist ein sog. Error-Code, d.h. eine Zahl die repräsentiert, ob und was schief gegangen ist,
+das http kennt sehr viele dieser Codes; der bekannteste ist 404 für \emph{file not found}, der wird auch 
+von Web-Browsern angezeigt und bedeutet, dass die Datei, auf die man zugreifen wollte, auf dem Server nicht
+gefunden wurde. Weniger bekannt ist der Code 200 für \emph{Ok}, der einfach nur bedeutet, dass alles funktioniert
+hat.
+
+In der Verzweigung, die auf den Aufruf folgt, wird einfach nur geprüft, ob der Error-Code 200 ist. Wenn ja, dann 
+wird mit \code{http.getString} der Inhalt der Rückgabe - eine Zeichenkette - abgerufen und über die serielle
+Schnittstelle ausgegeben. Anderenfalls wird die Fehlermeldung über die serielle Schnittstelle ausgegeben und 
+10 Sekunden gewartet. In jedem Fall wird danach mit \code{http.end()} die Verbindung zum Server geschlossen und 
+dann 3 Sekunden gewartet. 
+
+\begin{excercise}{e47}{Einfacher Web-Zugriff}
+Lade das Programm \gitHub{httpClient1}, führe es aus und starte den Seriellen Monitor.
+Beobachte was das Programm auf dem Seriellen Monitor ausgibt.
+\end{excercise}
+
+\begin{excercise}{e48}{Einfacher Web-Zugriff}
+Lade das Programm \gitHub{httpClient2}, führe es aus und starte den Seriellen Monitor.
+Beobachte was das Programm auf dem Seriellen Monitor ausgibt und versuche im Quelltext
+nachzuvollziehen, was das Programm macht.
+\end{excercise}
+
+\vfill\null\pagebreak
+\sect{hw4}{Hardwareaufbau \#4}
+\bigfig{hw4}{TestaufbauBuzzerSteckplatine}{Schematische Darstellung des vierten Aufbaus}
+
+Als zusätzlicher Aktor soll ein Piezo-Summer/Buzzer eingebaut werden. Piezoelektrische Materialien verändern Ihre Form,
+wenn eine Spannung angelegt wird und erzeugen eine Spannung, wenn man ihre Form ändert. Man kann also Sensoren und
+Aktoren daraus bauen. In dem Buzzer, den wir einbauen, ist eine piezoelektrische Keramikelektrode verbaut. Durch Anlegen einer
+Spannung verändert diese ihre Form und bewegt damit eine kleine Membran. Wechselt man nun ständig die Spannung, beginnt die
+Membran zu schwingen. Wenn die Frequenz der Spannungswechsel im Hörbereich liegt, erklingt dabei ein Ton, den man hören kann.
+In \reffig{hw4} ist der Aufbau schematisch dargestellt. Der Summer ist beschriftet: Bitte beim Einbauen darauf achten, 
+dass die Polarität stimmt, also der Pluspol am Plusleiter und der Minuspol am Minusleiter angeschlossen wird.
+
+Das Programm \gitHub{buzzer.ino} spielt eine Tonfolge auf dem Buzzer. Dazu werden in der \code{loop} lediglich zwei
+neue Programmaufrufe eingeführt:
+
+\begin{src}
+void loop() {
+  tone(buzzPin, triad[counter]);
+  ...
+  noTone(buzzPin);
+  ...
+}
+\end{src}
+
+Der Aufruf von \code{tone} lässt einen Pin mit einer vorgegebenen Frequenz zwischen HIGH und LOW
+hin und her schalten. Wenig überraschend sind die zu übergebenden Parameter, die Nummer des Pin - im 
+Beispiel \code{buzzPin} - und die Frequenz als Ganzzahl - im Beispiel \code{triad[counter]}.
+Die Funktion \code{noTone} schaltet das Hin- und Herschalten wieder ab.
+
+\vfill\null\pagebreak
+
+\begin{excercise}{a12}{Buzzer}
+Lade das Programm \gitHub{buzzer.ino} und führe es aus.
+Höre was das Programm auf dem Buzzer ausgibt und versuche im Quelltext
+nachzuvollziehen, was das Programm macht.
+\end{excercise}
+
+\begin{excercise}{a14}{Buzzer Bonus}
+Versuche das Programm so anzupassen, dass eine Tonleiter oder eine Melodie gespielt wird.
+\end{excercise}
+
+\sect{telegram}{Steuern über Chat-Bot}
+
+Zum Steuern des NodeMCU über das Internet wird die Chat-Applikation \emph{Telegram} verwendet.
+Telegram bietet die Möglichkeit sog. Bots zu erstellen, das sind virtuelle Chat-Partner, die 
+von einem Computer gesteuert werden. Um den Bot zu steuern, kann man über eine sog. Web-Schnittstelle
+auf den Telegram-Server zugreifen. Web-Schnittstelle bedeutet, dass der Server und der Client
+über das http miteinander kommunizieren, also genau so wie Web-Client und Web-Server. Als Text
+werden aber nicht Web-Seiten in html ausgetauscht, sondern sog. JSON-Messages.
+
+Weitere Details sind im Rahmen dieses Kurses nicht von Bedeutung. Für den Zugriff auf 
+den Telegram-Server wird eine Bibliothek verwendet. Wichtig ist nur, dass der Zugriff
+im Prinzip genau so funktioniert, wie in den Beispielen mit den Web-Clients. 
+
+\ssect{libextern}{Einbinden externer Bibliotheken}
+
+Neben den internen Bibliotheken bietet die ArduinoIDE auch die Möglichkeit externe Bibliotheken einzubinden. Diese können aus
+Zip-Archiven importiert oder aus einem zentralen Repository im Internet geladen werden.
+
+\bigfig{Bibliotheksverwalter}{Bibliotheksverwalter}{Bibliotheksverwalter der ArduinoIDE zum Einbinden von externen Bibliotheken}
+
+Zum Einbinden solcher Bibliotheken startet man den Bibliotheksverwalter über \menuiii{Sketch}{Bibliothek einbinden}{Bibliotheken verwalten...}. 
+Durch Eingaben in der oberen Text-Box können die verfügbaren Bibliotheken gefiltert werden. Über die Schaltfläche
+\menui{Install} kann eine Bibliothek installiert werden. Im Rahmen des Kurses wird die Bibliothek \lib{TelegramBotClient}
+{Jörn Schlingensiepen} verwendet.
+
+%todo watchdog
+\end{multicols}
+\ssect{botfather}{Einrichten eines eigenen Bots}
+\begin{multicols}{2}
+
+\bigfig{botfather1}{botfather1}{Telegram: Begrüßung durch den BotFather}
+
+\bigfig{botfather2}{botfather2}{Telegram: Funktionen des BotFathers}
+
+\bigfig{botfather3}{botfather3}{Telegram: Neuer Bot erstellt}
+
+Den Bot als virtuellen Kommunikationspartner richtet man direkt in der Telegram-App ein. Dazu startet man eine Konversation
+mit dem Kontakt \emph{BotFather}.
+
+Nach einer Begrüßung \seefig{botfather1} listet 
+der BotFather die Funktionen, die er ausführen kann, auf \seefig{botfather2}. 
+Drückt man auf \emph{\textbackslash{}newbot} wird der Name des neuen Bots abgefragt \seefig{botfather3}. Dieser muss auf Bot enden. 
+Wenn alles funktioniert, legt BotFather einen neuen Bot an und zeigt auch einen
+sog. Token an. Mit diesem Token kann man später auf die Web-Schnittstelle zum Bot zugreifen, daher sollte man sich 
+diesen Token abspeichern. Außerdem zeigt BotFather noch eine url in der Form \texttt{t.me/<botname>} an. Wenn man auf
+diesen Link klickt, wird der neue Bot als Kommunikationspartner angezeigt.
+
+Zunächst antwortet der noch nicht, weil es noch kein Programm gibt, welches ihn über die Web-Schnittstelle steuert.
+Das soll im nächsten Schritt erstellt werden.
+
+\vfill\null\pagebreak
+\end{multicols}
+\ssect{telegrambot}{Benutzen der Bibliothek TelegramBotClient}
+\begin{multicols}{2}
+In \gitHub{TelegramEchoBot} findet man den Quellcode für einen EchoBot, das ist ein Bot, der immer das zurücksendet, 
+was man ihm geschickt hat.
+Zu Beginn werden die Konstanten deklariert:
+\end{multicols}
+\begin{src}
+// Instantiate Telegram Bot secure token
+// This is provided by BotFather
+const String botToken = "<< YOUR BOT TOKEN >>";
+
+// Instantiate the ssl client used to communicate with Telegram's web API
+WiFiClientSecure sslPollClient;
+
+// Instantiate the client with secure token and client
+TelegramBotClient client(
+      botToken, 
+      sslPollClient);
+\end{src}
+
+\begin{multicols}{2}
+Bei \code{botToken} muss der Token eingetragen werden, den BotFather beim Erstellen des Bots erzeugt hat.
+\code{WiFiClientSecure sslPollClient} ist ein Client zum Zugriff auf das Internet, der alles TLS verschlüsselt. Mit der
+TLS Verschlüsselung kann auch http abgesichert werden, man bezeichnet es dann als https.
+\code{TelegramBotClient client} ist der Client zum Zugriff auf den Telegram-Server, dem beim Instanziieren der
+Token (\code{botToken}) und der verschlüsselnde Client (\code{sslPollClient}) übergeben werden.
+
+\end{multicols}
+\begin{src}
+// Function called on receiving a message
+void onReceive (
+  TelegramProcessError tbcErr, 
+  JwcProcessError jwcErr, 
+  Message* msg)
+{
+    // Sending the text of received message back to the same chat
+    // chat is identified by an id stored in the ChatId attribute of msg
+    client.postMessage(msg->ChatId, msg->Text);
+}
+\end{src}
+\begin{multicols}{2}
+
+Dann wird ein neues Unterprogramm mit den Namen \code{onReceive} implementiert, es gibt nichts zurück, daher der
+Rückgabetyp \code{void}. Als Parameter erhält es zwei Error-Codes und eine Message. Das Programm
+wird später von \code{TelegramBotClient} aufgerufen, wenn eine neue Nachricht vom Server eingetroffen ist.
+In der Message selbst sind mehrere Informationen enthalten, die über den Operator \code{->} ausgelesen werden können.
+Enthalten sind: der Absender, die Absendezeit usw.. Interessant für den EchoBot sind die \code{msg->ChatId}
+und der \code{msg->Text}. Der Bot kann wie ein echter Mensch mit mehreren Chat-Partnern chatten und in mehreren
+Chat-Gruppen Mitglied sein, daher ist es wichtig zu wissen, aus welchem Chat eine Nachricht gekommen ist.
+Die Chats können anhand der Id unterschieden werden. Für den EchoBot ist das wichtig, damit er weiß in welchen
+Chat er zurückschreiben soll. Der Aufruf \code{client.postMessage} bekommt als Parameter eine Chat-Id und den Text, 
+der versendet werden soll, übergeben. Im Fall des EchoBots genau die Chat-Id und den Text der eingehenden Nachricht.
+
+\begin{src}
+// Function called if an 
+// error occures
+void onError (
+  TelegramProcessError tbcErr, 
+  JwcProcessError jwcErr)
+{
+  Serial.println("onError");
+  ...
+}
+\end{src}
+
+Analog zu \code{onReceive} gibt es auch ein \code{onError}, das der Client aufruft, wenn ein Fehler beim Empfangen oder
+Senden einer Nachricht aufgetreten ist. Der Rest des Programms besteht aus bekannten Aufrufen zum Verbinden mit dem Netzwerk
+und dem Starten der seriellen Schnittstelle. Interessant wird es im \code{setup}:
+\begin{src}
+void setup() {
+  ...
+  // Sets the functions implemented 
+  // above as so called callback 
+  // functions, thus the client will 
+  // call this function on receiving 
+  // data or on error.
+  client.begin(      
+      onReceive,
+      onError);    
+}
+\end{src}
+Mit \code{client.begin} wird der Client initialisiert. Dazu werden die beiden davor implementierten Unterprogramme 
+\code{onReceive} und \code{onError} als Parameter übergeben.
+
+Die \code{loop} ist dann relativ unspektakulär:
+
+\begin{src}
+void loop() {
+  // To process receiving 
+  // data this method has 
+  // to be called each main 
+  // loop()
+  client.loop();
+}
+\end{src}
+
+Hier wird einfach nur das Programm \code{loop} am Client aufgerufen. Dieses Programm prüft, ob eine neue Nachricht angekommen oder 
+ein Fehler aufgetreten ist und ruft dann entsprechend \code{onReceive} oder \code{onError} auf.
+
+\begin{excercise}{tg1}{EchoBot}
+Lade das Programm \gitHub{TelegramEchoBot.ino} und führe es aus.
+Sende dem Programm Nachrichten über die Telegram-App.
+\end{excercise}
+
+Bots können dem Anwender in Telegram Schaltflächen zur Auswahl vorgefertigter Antworten anzeigen. Das Programm 
+\gitHub{TelegramEchoBotKeyboard.ino} demonstriert diese Möglichkeit.
+
+\begin{excercise}{tg2}{Keyboard}
+Lade das Programm \gitHub{TelegramEchoBotKeyboard.ino} und führe es aus.
+Sende dem Programm Nachrichten über die Telegram-App.
+\end{excercise}
+
+Die Funktion der vorgefertigten Antworten kann man auch nutzen, um dem Anwender Befehle zum Steuern des Testaufbaus
+als Knöpfe zur Verfügung zu stellen. Das Programm \gitHub{TelegramBotController.ino} demonstriert das.
+
+\begin{excercise}{tg3}{Controller}
+Lade das Programm \gitHub{TelegramBotController.ino} und führe es aus.
+Sende dem Programm Nachrichten über die Telegram-App.
+\end{excercise}
+
+
+\chap{extra}{Weitere Aktoren}
+
+\sect{sr}{Schieberegister}
+\bigfig{schieberegister}{schieberegister}{Schematische Darstellung des Aufbaus zum Schieberegister}
+
+Oft reichen die Pins, die eine MCU bereitstellt nicht aus, um alle Informationen darzustellen bzw. alle 
+Aktoren gleichzeitig zu steuern. Dann müssen Informationen hintereinander übertragen werden. Eine einfache
+Möglichkeit dazu ist ein Schieberegister. Ein einfacher Aufbau zur Simulation eines solchen Schieberegisters
+findet sich unter \doublelink{https://www.tinkercad.com/things/eyYTnw15L81}{gkl}.
+\vfill\null\pagebreak
+Dieses Schieberegister hat acht Datenausgänge, deren Zustand über drei Eingänge gesteuert wird.
+Im Baustein gibt es einen Datenspeicher mit acht Plätzen, in denen jeweils HIGH oder LOW gespeichert ist.
+Die drei Eingänge des Schieberegisters haben folgende Funktion:
+\begin{description}
+  \item[Data] Hier liegt die eigentliche Information - das Datum - als HIGH oder LOW an.
+  \item[Clk] Die Clock zeigt an, wann ein Datum eingelesen werden soll. Ändert sich der Zustand an CLK von LOW nach HIGH, 
+  dann werden alle Einträge im Datenspeicher um eins weiter geschoben (daher Schieberegister) und das Datum, das an Data anliegt, 
+  wird in den vorderste (jetzt freien) Speicherplatz eingespeichert.
+  \item[Latch] Zeigt an, dass die Daten, die im Datenspeicher eingespeichert sind, an den Datenausgängen ausgegeben werden
+  sollen. Ändert sich der Zustand von LATCH von LOW nach HIGH, dann werden die Ausgänge entsprechend der Speichereinträge
+  auf LOW oder HIGH geschaltet.
+\end{description}
+
+\begin{excercise}{tc1}{Schieberegister}
+Starte die Simulation in TinkerCAD und versuche die vier mittleren LEDs zum Leuchten zu bringen. Die Taster können einfach 
+mit der Maus angeklickt werden. Um in TinkerCAD einen Taster \textit{festzuhalten}, muss er mit gedrückter Shift-Taste 
+angeklickt werden.
+\end{excercise}
+
+%\begin{anotation}
+%Schieberegister haben noch eine Reihe anderer Funktionen und können auch hintereinandergeschaltet (kaskadiert) werden, aber 
+%das ist Inhalt für einen weiteren Workshop.
+%\end{anotation}
+
+\vfill\null\pagebreak
+
+
+% todo kaskadieren
+
+
+\sect{ledmatrix}{LED-Matrix}
+\bigfig{hw6}{TestaufbauLEDMatrixSteckplatine}{Schematische Darstellung des Anschlusses der LED-Matrizen}
+
+Ein typisches Beispiel für die Ansteuerung von sehr vielen Aktoren sind LED-Anzeigen. Daher soll hier am 
+Bespiel einer LED-Matrix die Funktionsweise erläutert werden. Die LED-Matrix ist über vier Leitungen mit der
+MCU verbunden und steuert 8x8 also 64 LEDs, die auch ähnlich, wie beim Beispiel \gitHub{myFade.ino} in
+ihrer Helligkeit gesteuert werden können. Die Ansteuerung übernimmt ein Spezial-Chip MAX7219, der auch noch
+so in Reihe geschaltet werden kann, dass noch viel mehr LEDs angesteuert werden können. 
+
+\vfill\null\pagebreak
+\ssect{matrix}{Funktionsweise}
+
+Auch der MAX7219 hat keine 64 Ausgänge, die komplette Matrix wird über jeweils einen Eingang pro Spalte und einen
+Eingang pro Reihe, also 16 Eingänge (8 Reiheneingänge und 8 Spalteneingänge) geschaltet. Dabei macht man sich zum 
+Einen die Eigenschaften von LEDs zu Nutze, nur in eine Richtung Strom zu leiten und zum Anderen die Trägheit 
+des menschlichen Auges. Ein einfacher Aufbau zur Simulation einer LED-Matrix findet sich unter:
+\doublelink{https://www.tinkercad.com/things/2gQoV7RvQVU}{khi}.
+
+\fig{ledMatrix1}{ledMatrix1}{Simulation LED}
+Eine LED hat zwei Anschlüsse, an denen jeweils HIGH (+/1) oder LOW (-/0) anliegen kann, daraus ergeben sich
+vier mögliche Kombinationen.
+Die Simulation in \reffig{ledMatrix1} demonstriert, dass LEDs nur in einer der vier möglichen 
+Kombinationen leuchten, da nur in eine Richtung Strom fließen kann. Wenn kein Strom fließt, dann leuchtet
+die LED auch nicht, obwohl eine Spannung anliegt.
+
+\begin{excercise}{tc2}{LED}
+Starte die Simulation in TinkerCAD und probiere die verschiedenen Schaltkombinationen durch, um zu sehen,
+wann die LED leuchtet.
+\end{excercise}
+
+
+\fig{ledMatrix3x3}{ledMatrix3x3}{Simulation LED-Matrix}
+
+Das macht man sich zu Nutze um einzelne Reihen zu aktivieren. 
+Die Simulation in \reffig{ledMatrix3x3} zeigt, dass man durch die Selektion einer Reihe erreichen kann, 
+dass die Information, die an den Spalten-Eingängen anliegen, sich genau auf die LEDs in dieser Reihe 
+auswirken, während alle anderen aus bleiben.
+
+Den Rest erledigt die Trägheit der menschlichen Wahrnehmung. Der Controller schaltet einfach ganz schnell 
+hintereinander die einzelnen Reihen durch und legt immer die passende Information an den Reihen-Eingängen an. 
+Sogar die Wahrnehmung der Helligkeit kann so gesteuert werden, für \textit{dunkleres} Leuchten schaltet der 
+Controller die LED einfach schnell wieder aus, soll \textit{heller} geleuchtet werden, bleibt die LED bis
+zum Ende des Zeitslots für diese Reihe an.
+
+\begin{excercise}{tc3}{LED-Matrix}
+Starte die Simulation in TinkerCAD und schalte die einzelnen Reihen durch. Versuche eine Raute zu schalten!
+\end{excercise}
+
+\vfill\null\pagebreak
+\ssect{spi}{Serial Peripheral Interface}
+\bigfig{SPI1}{SPI1}{Schematische Darstellung des Serial Peripheral Interface Bus (SPI-Bus)}
+
+Am Beispiel des Schieberegisters konnte man sehen, dass zur Übertragung von Informationen zwei
+Leitungen reichen, wenn man die Information hintereinander überträgt. Diese Art der Datenübertragung
+ist für verschiedene Anwendungsfälle standardisiert. Der MAX7219 ist über einen sog. 
+\abbr{S}erial \abbr{P}eripheral \abbr{I}nterface \abbr{Bus} (\abbr{S}PI-Bus) angebunden. 
+In \reffig{SPI1} kann man sehen, dass für den SPI-Bus insgesamt vier Leitungen und zwei Rollen 
+standardisiert sind:
+\begin{description}
+  \item[SCLK] Die \emph{Serial Clock} funktioniert genauso, wie beim Schieberegister. Wenn sich hier etwas 
+  am Schaltzustand ändert, dann liegen Daten an. Damit das funktiniert, müssen die Rollen \emph{Master} und 
+  \emph{Slave} festgelegt sein, weil nur ein Chip die SCLK schalten können darf.
+  \item[MOSI] \abbr{M}aster \abbr{O}ut \abbr{S}lave \abbr{I}n ist die Datenleitung in Richtung Slave
+  \item[MISO] \abbr{M}aster \abbr{I}n \abbr{S}lave \abbr{O}ut ist die Datenleitung in Richtung Master
+  \item[SS] \abbr{S}lave \abbr{S}elect wählt den Slave aus, der Senden und Empfangen darf. 
+  In manchen Dokumentationen heißt diese Leitung auch \abbr{C}hip \abbr{S}elect (\abbr{CS}).
+\end{description}
+
+Zur eigentlichen Datenübertragung ist \emph{SS} also nicht notwendig, es erlaubt aber den Betrieb von mehreren Slaves
+an den gleichen Leitungen. In \reffig{SPI2} kann man sehen, dass der Slave-Select-Mechanismus die Möglichkeit bietet,
+für jeden zusätzlichen Slave nur noch einen Datenpin zu verbrauchen, an dem das SS des zusätzlichen Chips angeschlossen
+wird.
+
+Genau das macht sich die Schaltung in \reffig{hw6} zu Nutze; die lila Drahtbrücken an D4 und D8 sind die Slave-Select-Leitungen.
+
+\bigfig{SPI2}{SPI2}{Schematische Darstellung des SPI-Bus mit drei Slaves}
+
+\vfill\null\pagebreak
+\begin{excercise}{hw6}{Aufbau Matrix}
+Baue die im Schema \reffig{hw6} dargestellte Schaltung auf! Entferne dazu die Widerstände, mit denen die LEDs verbunden sind.
+Die Anschlüsse an der LED-Matrix sind beschriftet. Achte darauf, dass VCC und GND richtig herum an 3v3 und GND angeschlossen 
+sind und CS jeweils an D4 und D8.
+\end{excercise}
+
+\vfill\null\columnbreak
+\ssect{lma}{Ansteuern der LED-Matrizen}
+In \gitHub{ledmatrix.ino} findet sich ein Beispielprogramm zum Ansteuern der beiden LED-Matrizen.
+Die Ansteuerung der LED-Matrix über den SPI-Bus und den MAX7219 erfolgt wieder über Bibliotheken,
+welche die grundsätzliche Kommunikation über SPI (\code{SPI.h}) und mit dem Chip (\code{LedMatrix.h}) 
+schon implementieren.
+
+Nach dem notwendigen Definitionsblock zur Festlegung der Pins etc. werden die Objekte für die Steuerung der 
+beiden Matrizen initialisiert:
+\begin{src}
+LedMatrix ledMatrix1 = 
+  LedMatrix(1, CS_PIN1);
+LedMatrix ledMatrix2 = 
+  LedMatrix(1, CS_PIN2);
+\end{src}
+
+Als Parameter werden übergeben: Die Anzahl der kaskadierten MAX7219 (s.o. Der Chip selbst kann für größere LED-Flächen
+hintereinandergeschaltet werden.) und der Pin an dem der Slave-Select-Pin des Chip angeschlossen ist. Die übrigen
+Pins liegen standardmäßig schon da, wo sie nach dem vorgegebenen Schema verdrahtet sind.
+
+Im \code{setup} werden dann die Objekte initialisiert:
+
+\begin{src}
+void setup() {
+  ..
+  ledMatrix1.init();
+  ledMatrix1.setIntensity(4);
+  ..
+}
+\end{src}
+
+\code{init} startet die Kommunikation mit dem MAX7219 und \code{setIntensity} setzt die Helligkeit, 
+hier können Zahlen zwischen 0 und 15 übergeben werden. Das vorangestellte \code{ledMatrix1.} zeigt 
+hier an, dass die Programme an dem Objekt für die erste LED-Matrix ausgeführt werden soll.
+
+\begin{src}
+void loop() 
+{
+    ledMatrix1.clear();
+    ledMatrix1.setPixel(
+      counter/8, counter%8);
+    ledMatrix1.commit();
+    ...
+    counter++;
+    if (counter >= 64) 
+      counter=0; 
+}
+\end{src}
+
+In der \code{loop} wird dann immer die nächste LED angeschaltet. Der Aufruf von \code{clear} an der 
+ersten Matrix schaltet alle LEDs aus. Mit \code{setPixel} wird ein einzelner Pixel eingeschaltet. 
+Als Parameter werden dessen x und y Koordinaten auf der Matrix (Reihe und Spalte) übergeben.
+Dazu wird der Modulo-Operator (\%), der den Rest einer ganzzahligen Division berechnet, genutzt, um mit Hilfe
+des \code{counter} immer die Koordinaten für die nächste LED zu berechnen.
+Der Aufruf \code{commit} startet die eigentliche Übertragung der LED-Schaltzustände an den MAX7219.
+So können auch mehrere Aufrufe von \code{setPixel} hintereinander gemacht werden, die dann zu einer
+Übertragung zusammengefasst werden.
+
+
+\begin{excercise}{lm1}{Pixel testen}
+Lade das Programm \gitHub{ledmatrix.ino} und führe es aus.
+Beobachte was das Programm auf den LED-Matrizen ausgibt.
+\end{excercise}
+
+Das Programm \gitHub{ledmatrix1.ino} demonstriert noch eine weitere Funktion der LEDMatrix-Bibliothek.
+Über die Bibliothek können Texte auf der LED-Matrix ausgegeben werden. Dazu wird in \code{setup}
+der Text in das jeweilige Objekt eingespeichert:
+
+\begin{src}
+void setup() {
+  ...
+  ledMatrix1.setText(
+    "Digitalisierung");
+  ...
+  ledMatrix2.setText(
+    "Cloudification");
+  ...
+}
+\end{src}
+\vfill\null\columnbreak
+\begin{src}
+void loop() {
+  ledMatrix1.clear();
+  ledMatrix1.scrollTextLeft();
+  ledMatrix1.drawText();
+  ledMatrix1.commit();
+  ...
+}
+\end{src}
+
+In der \code{loop} wird dann die Matrix gelöscht (\code{clear}), 
+der Text jeweils weitergescrollt (\code{scrollTextLeft}),
+dann der Text an der jeweiligen Scrollposition in die Matrix gemalt (\code{drawText})
+und zum Schluß wird alles an die Matrix übertragen (\code{commit}).
+
+\begin{excercise}{lm2}{Text ausgeben}
+Lade das Programm \gitHub{ledmatrix1.ino} und führe es aus.
+Beobachte was das Programm auf den LED-Matrizen ausgibt.
+\end{excercise}
+
+\begin{excercise}{lm3}{Text CinemaSkope}
+Passe das Programm \gitHub{ledmatrix1.ino} so an, dass, wenn man beide LED-Matrizen nebeneinander hält, ein Text über beide
+Matrizen läuft.
+\end{excercise}
+
+\begin{excercise}{lm4}{Text von Bot}
+Erstelle ein Programm, das über Telegram Nachrichten erhält und diese über die beiden nebeneinander hängenden LED-Matrizen ausgibt.
+(Eher ein langfristiges Projekt).
+\end{excercise}
+\vfill\null\pagebreak
+\sect{lcddisplay}{LCD Display}
+\bigfig{hw7}{TestaufbauLCDSteckplatine}{Schematische Darstellung des Anschlusses des LCD-Displays}
+\reffig{hw7} zeigt den Anschluß eines LCD-Displays an den NodeMCU. Neben der Stromversorgung sind nur zwei Datenkabel notwendig.
+Das Display ist über einen sog. I2C-Bus angebunden, über den auch mehrere Geräte über die gleichen Datenleitungen angebunden werden
+können, weil die Geräte auf dem Bus über eine interne ID adressiert werden.
+
+Für eine solche Anbindung bedient man sich mehrerer Bibliotheken. Die interne Bibliothek \code{wire} stellt die Anbindung 
+verschiedener Geräte über I2C-Bus zur Verfügung. Das Programm \gitHub{i2c.ino} nutzt diese Bibliothek um alle verfügbaren
+Geräte auf dem Bus anzuzeigen.
+
+Für die Ansteuerung des Displays kommt die externe Bibliothek \lib{Adafruit SSD1306}{Adafruit} zum Einsatz.
+Und damit man nicht jeden Pixel einzeln malen muss, kommt auch die Bibliothek \lib{Adafruit GFX Library}{Adafruit} zum Einsatz.
+Diese Grafik-Effekt-Bibliothek stellt Funktionen bereit, um z.B. Linien zu malen oder Text auszugeben. Sie implementiert also
+Funktionen um die höheren Grafikkonzepte \textit{Linie}, \textit{Kreis}, \textit{Ellipse} etc. in Schaltzustände der 
+Pixel auf dem Display umzurechnen.
+
+\gitHub{screentest.ino} und \gitHub{screentest.ino} enthalten eine entsprechende Demo und sind ein guter Startpunkt für 
+eigene Experimente.
+
+
+
+
+
+
+
+
+

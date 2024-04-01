@@ -1,0 +1,208 @@
+
+\newif\ifspecialenv
+\specialenvfalse
+
+\newcommand{\multicolinterrupt}[1]{% Stuff to span both rows
+\end{multicols}
+#1%
+\begin{multicols}{2}
+}
+
+\newcommand{\chap}[2]{%
+	\FloatBarrier%
+  \multicolinterrupt{%
+	\ifspecialenv%
+	  \chapter*[#2]{#2}%
+	\else%
+	  \chapter[#2]{#2}%
+	\fi%
+	\label{sec:#1}%
+	}%
+  \FloatBarrier%
+}
+
+\newcommand{\sect}[2]{%
+	\FloatBarrier%
+  %\multicolinterrupt{%
+	\ifspecialenv%
+  	\section*[#2]{#2}%
+	\else%
+  	\section[#2]{#2}%
+	\fi%
+	\label{sec:#1}%
+	%}%
+  \FloatBarrier%
+}
+
+\newcommand{\ssect}[2]{%
+	\ifspecialenv%
+  	\subsection*[#2]{#2}%
+	\else%
+  	\subsection[#2]{#2}%
+	\fi%
+	\label{sec:#1}%
+}
+
+\newcommand{\bigfig}[3]
+{
+\end{multicols}
+	\begin{figure}[htbp]
+    \includegraphics[width=1.00\textwidth]{img/#2}
+    \caption{#3}
+    \label{fig:#1}
+  \end{figure}
+\begin{multicols}{2}
+}
+
+\newcommand{\fig}[3]
+{
+	\begin{center}
+  \includegraphics[width=1.00\linewidth]{img/#2}
+  \captionof{figure}{#3}
+  \label{fig:#1}
+	\end{center}	
+}
+
+\newcommand{\figinline}[2]
+{
+	\begin{center}
+  \includegraphics[width=1.00\linewidth]{img/#2}  
+  \label{fig:#1}
+	\end{center}	
+}
+
+
+\definecolor{lightgray}{gray}{0.6}
+\definecolor{lightbrown}{RGB}{255,222,173}
+
+\newcommand{\doublelink}[2]{\fulllink{#1}, \shortlink{#2}}
+\newcommand{\shortlink}[1]{Kurzlink: \small\fcolorbox{blue}{white}{\texttt{#1}}\normalsize}
+\newcommand{\fulllink}[1]{\url{#1}}
+
+\newcommand{\menui}[1]{\small\fbox{#1}\normalsize}
+\newcommand{\menuii}[2]{\small\fbox{#1} $\rightarrow$ \fbox{#2}\normalsize}
+\newcommand{\menuiii}[3]{\small\fbox{#1} $\rightarrow$ \fbox{#2} $\rightarrow$ \fbox{#3}\normalsize}
+\newcommand{\keyii}[2]{\small\ovalbox{#1}+\ovalbox{#2}\normalsize}
+\newcommand{\keyiii}[3]{\small\ovalbox{#1}+\ovalbox{#2}+\ovalbox{#3}\normalsize}
+
+%\newcommand{\gitHub}[1]{\small\fcolorbox{black}{brown!25}{gitHub:\\#1}\normalsize}
+\newcommand{\gitHub}[1]{\small\sethlcolor{lightbrown}\hl{gitHub:\-#1}\normalsize}
+%\newcommand{\lib}[2]{\small\fcolorbox{black}{lightgray}{\textbf{#1} by \textbf{#2}\normalsize}}
+\newcommand{\lib}[2]{\small\sethlcolor{lightgray}\hl{\textbf{#1} by \textbf{#2}}\normalsize}
+ 
+\newcommand{\linkreference}[1]{[\href{http://#1}{#1}]}
+
+\newcommand{\code}[1]{\texttt{\lstinline{#1}}}
+
+
+\newcommand{\bigsrc}[2]  {
+\end{multicols}
+  \lstinputlisting[language=#1]{src/#2}
+\begin{multicols}{2}
+}
+
+\newcommand{\circled}[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+\newcommand{\step}[1]{\circled{#1}}
+\newcommand{\term}[1]{\emph{\flqq #1 \frqq}}
+\newcommand{\abbr}[1]{\emph{\underline{#1}}}
+
+\newcommand{\reffig}[1]{Abbildung \ref{fig:#1}: \textsl{\nameref{fig:#1}} (Seite \pageref{fig:#1})}
+\newcommand{\refsec}[1]{Abschnitt \ref{sec:#1}: \textsl{\nameref{sec:#1}} (Seite \pageref{sec:#1})}
+\newcommand{\refexcursus}[1]{Exkurs \ref{exc:#1}: \textsl{\nameref{exc:#1}} (Seite \pageref{exc:#1})}
+
+\newcommand{\seefig}[1]{($\Rightarrow$ Abbildung \ref{fig:#1}: \textsl{\nameref{fig:#1} }, Seite \pageref{fig:#1})}
+\newcommand{\seesec}[1]{($\Rightarrow$ Abbildung \ref{sec:#1}: \textsl{\nameref{sec:#1} }, Seite \pageref{sec:#1})}
+\newcommand{\seeexcursus}[1]{($\Rightarrow$ Exkurs \ref{exc:#1}: \textsl{\nameref{exc:#1}} , Seite \pageref{exc:#1})}
+
+
+\makeatletter
+\newcounter{excursuscounter}
+\newenvironment{excursus}[2] {
+  \specialenvtrue
+  \stepcounter{excursuscounter}
+  \protected@write\@auxout{}{%
+  \string\newlabel{exc:#1}{{\theexcursuscounter}{\thepage}{#2}{}{}}}	
+
+  \mdfsetup {frametitle={\tikz[baseline=(current bounding box.east),outer sep=0pt]\node
+    [anchor=east,rectangle,fill=blue!20]
+    {\strut Exkurs~\theexcursuscounter:~#2};}}
+  \mdfsetup{innertopmargin=10pt,linecolor=blue!20,linewidth=2pt,topline=true,frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
+  \begin{mdframed}[]
+  \relax
+}
+{
+  \end{mdframed}
+  \specialenvfalse
+}
+
+\newcounter{excercisecounter}
+\newenvironment{excercise}[2] {
+  \specialenvtrue
+  \stepcounter{excercisecounter}
+  \protected@write\@auxout{}{%
+  \string\newlabel{exce:#1}{{\theexcercisecounter}{\thepage}{#2}{}{}}}
+  \mdfsetup {frametitle={\tikz[baseline=(current bounding box.east),outer sep=0pt]\node
+    [anchor=east,rectangle,fill=green!20]
+    {\strut Aufgabe~\theexcercisecounter:~#2};}}
+  \mdfsetup{innertopmargin=10pt,linecolor=green,linewidth=2pt,topline=true,frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
+  \begin{mdframed}[]
+  \relax
+}
+{
+  \end{mdframed}
+  \specialenvfalse
+}
+
+\newcounter{definitioncounter}
+\newenvironment{definition}[2] {
+  \specialenvtrue
+  \stepcounter{definitioncounter}
+  \protected@write\@auxout{}{%
+  \string\newlabel{def:#1}{{\thedefinitioncounter}{\thepage}{#2}{}{}}}
+  \mdfsetup {frametitle={\tikz[baseline=(current bounding box.east),outer sep=0pt]\node
+    [anchor=east,rectangle,fill=blue!20]
+    {\strut Definition~\thedefinitioncounter:~#2};}}
+  \mdfsetup{innertopmargin=10pt,linecolor=blue,linewidth=2pt,topline=true,frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
+  \begin{mdframed}[]
+  \relax
+}
+{
+  \end{mdframed}
+  \specialenvfalse
+}
+
+
+
+\newenvironment{anotation}{
+  \specialenvtrue
+  \mdfsetup {frametitle={\tikz[baseline=(current bounding box.east),outer sep=0pt]\node
+    [anchor=east,rectangle,fill=yellow!80]
+    {\strut Anmerkung};}}
+  \mdfsetup{innertopmargin=10pt,linecolor=yellow!80,linewidth=2pt,topline=true,frametitleaboveskip=\dimexpr-\ht\strutbox\relax,}
+  \begin{mdframed}[]
+  \relax
+}
+{
+  \end{mdframed}
+  \specialenvfalse
+}
+
+
+\makeatother
+
+
+\lstnewenvironment{src}
+{ 
+  \lstset{language=c,texcl=true, backgroundcolor=\color{black!10}}
+  %\begin{mdframed}[innertopmargin=10pt,linecolor=black,linewidth=2pt,topline=true,backgroundcolor=black!10]
+}
+{
+  %\end{mdframed}
+}
+ 
+
+
+
+

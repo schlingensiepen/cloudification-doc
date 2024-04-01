@@ -1,0 +1,207 @@
+\chap{inbetriebnahme}{Inbetriebnahme}
+
+\bigfig{ziel1}{Ziel01}{Ziel dieses Kapitels: Der Aufbau zur Inbetriebnahme}
+
+Bevor es mit der Theorie losgeht, soll in diesem Kapitel die Hardware in Betrieb genommen werden, d.h. 
+die Hardware wird vorgestellt, angeschlossen, mit einer LED verbunden und ein erstes Programm wird ausgeführt.
+\reffig{ziel1} zeigt unsere erste Schaltung, die auf einem sog. \term{Steckbrett} (engl. \term{Breadboard}) 
+aufgesteckt ist.
+
+\pagebreak\sect{hwv}{Vorstellung der Hardware}
+\ssect{MCU}{Der ESP8266 - eine MCU (microcontroller unit)}
+
+\fig{ESP8266EX}{ESP8266}{Aufgelöteter ESP8266EX \linkreference{www.espressif.com}}
+
+Der Chip ESP8266 ist eine sog. \abbr{MCU} (\abbr{m}icro\abbr{c}ontroller \abbr{u}nit), d.h. ein kompletter Prozessor mit Peripherie auf einem Chip, der sich zur Integration in technische Systeme eignet und dort in der Regel Steuerungsaufgaben übernimmt (embedded applications).
+Der ESP8266 zeichnet sich dadurch aus, dass er sehr kostengünstig ist und einen kompletten WLAN-Chip enthält, für den auch ein kompletter TCP/IP-Stack implementiert ist. So ist das System in der Lage, über das Internet zu kommunizieren und einfache Informationen zu versenden und Befehle zu empfangen. Hersteller ist Expressif Systems (\fulllink{http://espressif.com/}).
+
+\ssect{UART}{Programmierung des ESP8266}
+
+\fig{uart}{uart}{Beispiele für RS232 Schnittstellen}% \linkreference{todo} \linkreference{todo} \linkreference{todo}}
+
+Der Chip ist programmierbar über ein \abbr{u}niversal \abbr{a}synchronous \abbr{r}eceiver-\abbr{t}ransmitter (\abbr{UART}), also eine serielle Schnittstelle, ähnlich zu der seriellen Schnittstelle (RS232), die bis vor ein paar Jahren in PCs verbaut wurde. Diese Schnittstellen sind sehr weit verbreitet, es gibt viele elektronische Bausteine, die über eine solche
+Schnittstelle verfügen. Für den Anschluss an PCs gibt es elektronische Bausteine, die auf der einen Seite einen USB-Anschluss haben und auf der anderen Seite eine
+solche UART-Schnittstelle. Mit einem solchen \term{USB-zu-UART-Konverter} können verschiedenste elektronische Bausteine mit einem PC verbunden werden.
+
+\ssect{Speicher}{Speicher für den ESP8266 }
+
+Die MCU braucht noch einen Speicher in dem das Programm abgelegt ist. Dieser Speicher darf nicht gelöscht werden, wenn der Strom ausgeschaltet wird. Diese Art von Speicher nennt man \abbr{E}lectrically \abbr{E}rasable \abbr{P}rogrammable \abbr{R}ead-\abbr{O}nly \abbr{M}emory kurz \abbr{EEPROM}.
+Das heißt im Deutschen ungefähr \term{elektrisch löschbarer programmierbarer Nur-Lese-Speicher} und beschreibt einen Speicher, der im Normalbetrieb/Normal\-modus
+nur lesbar, aber in einem speziellen Programmiermodus beschreibbar ist. Also genau das, was man für eine MCU braucht. Startet die MCU, dann lädt sie im Normalmodus
+aus dem Speicher das abgespeicherte Programm und startet so die Steuerung des angeschlossenen Gerätes. 
+
+Nach dem Zusammenbau oder wenn man das Programm nochmal ändern will, kann man die Schaltung in den Programmiermodus versetzen und ein neues, anderes Programm 
+einspeichern. Nach dem Starten lädt die MCU dann das neue Programm und verhält sich entsprechend anders.
+
+Im Fall des ESP8266 ist der Speicher über einen sog. \abbr{S}erial \abbr{P}eripheral \abbr{I}nterface \abbr{Bus} (\abbr{SPI-Bus}) angeschlossen.
+Dies ist ein Standardanschluß, so dass man Bauteile verschiedener Hersteller oder Lieferanten einbauen kann.
+
+\ssect{sonoff}{Beispiel für ein Produkt mit einem ESP8266}
+
+\fig{SOnOff1}{SOnOff}{Beispiel für ein Produkt: SOnOff, schaltet 230V über WLAN}
+
+Es gibt auch fertige Produkte, die mit einem ESP8266 realisiert sind, z.B. den in \reffig{SOnOff1} und \reffig{SOnOff2} abgebildeten Schalter SOnOff. 
+Der Schalter kann 230V Wechselstrom, also den Strom, der aus einer üblichen Steckdose in Europa kommt, schalten. Auf der Abbildung kann man erkennen, 
+dass in der Mitte ein Relais montiert ist, welches den Strom, der auf den breiten Leiterbahnen geführt wird, schaltet. In der Mitte kann man erkennen, 
+dass dort auch eine UART-Schnittstelle auf der Platine ist. 
+Diese kann z.B. mit einem \term{USB-zu-UART-Konverter} verbunden werden um den ESP8266 auf der Platine zu programmieren.
+
+\fig{SOnOff2}{SOnOff2}{Zusammengebauter SOnOff-Schalter}
+
+
+\ssect{ESPxx}{ESP-XX, fertige Module für den Einsatz}
+
+\fig{ESP-01}{ESP-01}{Der ESP-01 von AI-Thinker \linkreference{www.antratek.de}}
+Seit 2014 stellt AI-Thinker (\fulllink{https://www.ai-thinker.com/}) komplette Module her, die aus einem ESP-8266, entsprechender Leistungselektronik, einem EEPROM, einem Sende- und Empfangsverstärker und einer WLAN-Antenne bestehen. 
+
+Diese Bausteine arbeiten mit einer Betriebsspannung von 3,3V und tragen je nach Ausstattung die Bezeichnung ESP-XX, wobei XX eine Nummer von 01 bis 12 darstellt.
+Mit diesen Systemen ist es einfach, schnell ein eingebettetes System zu realisieren und so Sensoren und Aktoren mit dem Internet zu verbinden um 
+Daten zu erfassen oder Systeme zu steuern.
+
+\ssect{NodeMCU}{NodeMCU Development Board mit ESP-12}
+\fig{NodeMCU}{NodeMCU}{NodeMCU, Development Board mit ESP-12 \linkreference{https://www.exp-tech.de/}}
+
+\term{NodeMCU} ist eine \term{Firmware} für ESP-12 und ein \term{Development Kit}. Als Firmware bezeichnet man ein vorgefertigtes Programm für eine MCU, 
+die direkt von der MCU ausgeführt werden kann und bestimmte Funktionen zur Verfügung stellt. 
+Die Firmware von NodeMCU ermöglicht es einen ESP-12 mit der Interpreter-Sprache LUA zu programmieren \seeexcursus{ausfuehren}. 
+
+Als Development Kit bezeichnet man eine Zusammenstellung von Werkzeugen und Geräten, mit denen man Software für eine Anwendung programmieren kann.
+Im Fall von NodeMUC ist das Development Kit eine betriebsfertig verdrahtete Hardware (\seefig{NodeMCU}), deren Pläne als OpenSource bereit stehen und die
+von verschiedenen Herstellern angeboten wird. Auf der Platine ist ein ESP-12 aufgelötet und die Platine kann über Steckerleisten mit Testaufbauten und einem
+\term{Steckbrett} (\term{Breadboard}) verbunden werden. Außerdem ist eine USB-Schnittstelle eingebaut, die mit einem USB-zu-UART-Konverter mit der 
+seriellen Schnittstelle des ESP-12 verbunden ist, so dass man den ESP-12 bequem vom PC aus programmieren kann. Als letztes ist auf dem Board auch eine 
+Leistungselektronik verbaut, die aus der 5V-Spannung des USB-Bus die 3,3V-Spannung des ESP-12 bereitstellen, so dass das ganze Ding direkt nach dem Anstecken
+in den USB-Bus programmiert und verwendet werden kann.
+
+In diesem Kurs verwenden wir ein solches Development Kit und programmieren es mit der weit verbreiteten Entwicklungsumgebung von \term{Arduino} 
+\seeexcursus{arduino} der sog. \term{Arduino-IDE}. Dabei steht \abbr{IDE} für eine \abbr{i}ntegrated \abbr{d}evelopment \abbr{e}nvironment, 
+also eine integrierte Entwicklungsumgebung. Integriert heißt hier, dass der Texteditor in dem man programmiert, auch Kommandos/Bedienelemente zur 
+Ansteuerung von \term{Compilern} \seeexcursus{ausfuehren} und zum Ausführen und Debuggen des Programmes kennt. Im Fall der Arduino-IDE kann die IDE 
+das fertige Programm also per Knopfdruck in Maschinensprache übersetzen und an die MCU übertragen und dort starten.
+
+\end{multicols}
+\pagebreak\begin{excursus}{arduino}{Arduino}
+Arduino ist eine aus Soft- und Hardware bestehende Plattform zur Entwicklung interaktiver, physische Systeme. 
+Beide Komponenten sind im Sinne von \term{Open Source} quelloffen. 
+Die Hardware besteht aus einem einfachen E/A-Board mit einem Mikrocontroller und analogen und digitalen Ein- und Ausgängen. 
+Die Entwicklungsumgebung basiert auf der Programmiersprache Processing und soll auch technisch weniger Versierten den Zugang zur 
+Programmierung und zu Mikrocontrollern erleichtern. Die Programmierung selbst erfolgt in einer C bzw. C++-ähnlichen Programmiersprache, 
+in sog. Sketches. Der \term{Quelltext} wird in Textdateien mit der Dateiendung .ino abgespeichert.
+Technische Details wie Header-Dateien sind vor den Anwendern weitgehend verborgen. Umfangreiche Bibliotheken und Beispiele vereinfachen den 
+Einstieg in die Programmierung (In Anlehnung an [wikipedia:arduino]).
+\end{excursus}
+\begin{multicols}{2}
+
+\vfill\null\pagebreak
+\sect{hw1}{Hardwareaufbau \#1}
+%
+\bigfig{hw1}{TestaufbauNurLEDSteckplatine}{Schematische Darstellung des ersten Aufbaus}%
+%
+Für die ersten Versuche brauchen wir einen einfachen Aufbau. In \reffig{hw1} ist dargestellt, wie der Grundaufbau aussieht. Die Schaltung ist auf einem
+sog. \term{Steckbrett} (\term{Breadboard}) aufgesteckt. Mit diesen Boards kann man einfache Schaltungen aufbauen und testen. 
+Das Board hat Spalten und Zeilen mit Steckbuchsen, die das gleiche Lochraster haben, wie Standardplatinen, d.h. die Stecker haben genau den gleichen
+Abstand, wie die Bohrungen auf einer Platine, so dass man Standardbauteile aufstecken kann.
+Auf dem Board sind oben und unten Reihen mit Steckbuchsen (rot und blau markiert), die untereinander quer verbunden sind. 
+Diese verwendet man um die Betriebsspannung in der
+Schaltung zu Verteilen. Die übrigen Stecker sind jeweils Spaltenweise untereinander verbunden. Diese Verbindung ist in der Mitte unterbrochen, so dass dort 
+elektronische Bausteine im sog. \term{DIL-Format} aufgesteckt werden können. Jeder Pin eines solchen Bausteins ist dann mit einer Spalte des Boards verbunden.
+Wenn man jetzt etwas mit einem solchen Pin verbinden will, dann braucht man diese nur mit einer Drahtbrücke zu verbinden. 
+In \reffig{drahtbruecke} kann man erkennen, dass diese Drahtbrücken einfache Kabel mit Steckern an den Enden sind. 
+Diese gibt es in verschiedenen Farben.
+
+\vfill\null\pagebreak
+\fig{drahtbruecke}{Drahtbruecke}{Drahtbrücke zum Verbinden der Spalten auf einem Steckbrett}
+
+Um den Kurs besser nachvollziehen zu können, empfiehlt es sich die Farben aus den schematischen Darstellungen zu übernehmen.
+
+Für den ersten Aufbau wird zunächst das Board so gelegt, dass die blaue Markierung für den negativen Pol oben liegt. Der NodeMCU wird dann vorsichtig 
+unten rechts in die Reihe A ab Spalte 0 eingesteckt. Dann wird die allgemeine Stromversorgung gesteckt, dazu wir die Spalte, die mit dem Pin GND verbunden ist,
+mit der lila Steckbrücke mit der blauen Reihe ganz oben verbunden. (GND steht für Ground und bezeichnet das untere Potential der Spannung, also den
+sog. Minuspol.) Analog wird die Spannung des Pins 3v3 mittels einer grauen Steckbrücke mit dem Pluspol (rote Reihe) verbunden.
+
+Dann wird in Reihe G eine LED zwischen die Spalten 35 und 36 eingesteckt. Dabei muss der längere Anschluss in Spalte 35 eingesteckt werden. Jetzt können die beiden
+Anschlüsse der LED über die Spalte 35 und 36 angeschlossen werden. Die Spalte 36 wird mit einer weißen Steckbrücke mit dem Minuspol der Spannung (blaue Reihe) 
+verbunden. Die LED soll über den Pin D5 angesteuert werden, dazu wird dieser Pin (Spalte 7) mit einem 220$\Omega$-Widerstand mit der Spalte 35 verbunden. Dazu müssen
+die Enden des Wiederstandes mit der Zange um 90\textdegree  gebogen und dann in eine Flucht gedreht werden. Zum Einstecken des Widerstandes kann die kleine Zange
+verwendet werden.
+
+\begin{excercise}{hw1}{Aufbau 1}
+Bau die im Schema \reffig{hw1} dargestellte Schaltung auf!
+\end{excercise}
+
+
+\vfill\null\pagebreak
+\sect{install}{Installation der Software}
+
+\ssect{installide}{Installation der IDE}
+
+\bigfig{ArduinoIDE}{ArduinoIDE}{Arduino-IDE mit neuer Sketch}
+Zum Programmieren der Schaltung verwenden wir die Arduino IDE, die unter \doublelink{https://www.arduino.cc/en/Main/Software}{ftq} heruntergeladen werden kann.
+Die IDE muss nicht installiert werden, es reicht die ZIP-Datei in einen Ordner auf der Festplatte zu entpacken.
+Und die Datei \texttt{arduino.exe} per Doppelklick zu starten.
+\reffig{ArduinoIDE} zeigt die gestartete IDE mit einem neuen Programm. Die Programme heißen auf der Arduino-Plattform Sketches. (Sollte beim Starten keine neue
+Sketch erstellt worden sein, kann diese über die Menüpunkte \menuii{Datei}{Neu} (\keyii{Strg}{n}) erstellt werden.
+
+Die Bedeutung des angezeigten Quelltextes wird in späteren Abschnitten erläutert, zunächst soll die aktuelle Schaltung in Betrieb genommen werden. 
+Dazu muss zunächst die IDE so konfiguriert werden, dass sie mit dem ESP-12 auf dem NodeMCU-Board kommunizieren kann. Dann wird ein Beispielprogramm 
+aus dem gitHUB-Repository geöffnet und auf der Plattform gestartet.
+
+\pagebreak\ssect{boardverwalter}{Verbinden der IDE zum NodeMCU}
+\bigfig{ideconfig}{ideconfig}{Dialog zur Konfiguration der IDE}
+Die IDE steuert den Compiler, so dass verschiedene Zielplattformen mit der gleichen IDE programmiert werden können, wenn man der IDE die Compiler
+für diese Plattformen bekannt macht. Das erledigt man über den sog. Board-Verwalter, der dafür sorgt, dass die passenden Programme heruntergeladen
+und konfiguriert werden. Dazu wird die Konfiguration aus dem Internet geladen. Über die Menüpunkte \menuii{Datei}{Voreinstellungen} (\keyii{Strg}{,})
+gelangt man zum Einstellungsdialog \seefig{ideconfig}. 
+Im Feld \menui{Zusätzliche Boardverwalter-URLs:} wird die URL für die Konfiguration eingegeben, in diesem Falle ist das 
+\doublelink{http://arduino.esp8266.com/stable/package_esp8266com_index.json}{hjk}. Der Einstellungsdialog wird dann mit \menui{Ok} geschlossen.
+
+\bigfig{boardverwalter}{boardverwalter}{Boardverwalter: Dialog zur Installation der Einstellungen für zusätzliche Boards}
+
+Unter \menuiii{Werkzeuge}{Board}{Boardverwalter...} kann man den eigentlichen Boardverwalter aufrufen \seefig{boardverwalter}.
+Wenn man im Suchfeld 'esp' eingibt, wird die Liste entsprechend eingegrenzt und so wird u.a. \lib{esp8266}{ESP8266 community} angezeigt. 
+Über die Schaltfläche \menui{Install} wird diese installiert. Der Boardmanager lädt nun alle notwendigen Datei herunter und installiert das Board
+in der IDE.
+Nach der Installation können wir das Board mit dem USB-Kabel am Rechner anschließen. Das Board wird über einen \term{UART} programmiert. 
+An PCs heißen diese Anschlüsse \term{serielle Ports} und werden unter Windows als COM-Schnittstelle bezeichnet. Die einzelnen Schnittstellen heißen
+COM1, COM2, COM3 ... Wenn wir den NodeMCU über den UART-USB-Konverter am PC anschließen, wird ein Treiber installiert, der eine virtuelle COM-Schnittstelle
+einrichtet, d.h. die Schnittstelle wird nur simuliert; es ist ja in der Regel keine RS232-Schnittstelle mehr am PC verbaut. 
+Deshalb nimmt man den USB-Stecker und simuliert die Schnittstelle als sog. \noindent\term{virtuelle Schnittstelle}. 
+Alles, was ein Programm auf dem PC nun über diese virtuelle Schnittstelle schickt, landet über die USB-Verbindung
+beim UART-USB-Konverter und von dort am UART des ESP-12 und umgekehrt kann ein Programm, dass die virtuelle Schnittstelle ausliest, alles 
+empfangen, was der ESP-12 über den UART versendet, weil der UART-USB-Konverter es umsetzt und es über die USB-Verbindung zum PC geschickt und dort vom
+Treiber auf die virtuelle serielle Schnittstelle umgesetzt wird.
+Die IDE kann jetzt also mit einer COM-Schnittstelle sprechen und das ganze verhält sich so, als wäre der ESP-12 direkt mit dem PC verbunden. Damit das
+funktioniert, müssen jetzt noch die COM-Schnittstelle und das richtige Board ausgewählt werden.
+Die Schnittstelle wählt man über \menuii{Werkzeuge}{Port} aus. Hier werden in der Regel zwei Schnittstellen angezeigt, weil Windows schon eine virtuelle
+Schnittstelle mit der Bezeichnung COM1 eingebaut hat. Die andere Schnittstelle ist in der Regel die neue virtuelle Schnittstelle zu unserem Board.
+Unter \menuii{Werkzeuge}{Board} muss jetzt noch \menui{NodeMCU 0.9 (ESP-12 Module)} ausgewählt werden, so dass die IDE die passenden Befehle für dieses
+Board erzeugt.
+
+\sect{start}{Das erste Programm starten}
+Um zu prüfen, ob der Aufbau funktioniert, wird ein Beispielprogramm geladen und ausgeführt. Über \menuii{Datei}{Öffnen...} 
+kann man das Beispiel \gitHub{myBlink.ino} in die IDE laden. Mit dem Befehl \menuii{Sketch}{Hochladen} (\keyii{Strg}{U}) wird die Sketch
+compiliert und zum NodeMCU übertragen.
+Wenn das erfolgreich war, dann blinkt die LED jetzt immer für eine Sekunde (eine Sekunde an, eine Sekunde aus, ...).
+
+\begin{excercise}{st1}{Starten}
+Starte das Programm \gitHub{myBlink.ino} auf Deinem Aufbau.
+\end{excercise}
+
+\vfill\null\columnbreak
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,125 @@
+\chap{pre}{Einführung}
+
+Dies ist der Umdruck zum \coursename. Diese Arbeitsmappe kann während
+des Kurses genutzt werden, um Abbildungen und Schaltungen nachzuschlagen oder etwas nachzulesen.
+Später können die Unterlagen als Nachschlagewerk oder zum nochmaligen Nachvollziehen der einzelnen 
+Schritte genutzt werden.
+
+Ziel des Kurses ist es, einen ESP8266 mit der Arduino-IDE zu programmieren, verschiedene Sensoren
+und Aktoren daran anzuschließen und über das Internet zu steuern. 
+
+\sect{aufb}{Aufbau des Umdruckes}
+
+Dieser Umdruck ist so gesetzt, dass man beim Lesen wichtige Teile oder Abschnitte, die eine besondere Bedeutung 
+haben, leicht erkennen kann.
+
+\sect{prelink}{Links und Verweise}
+In diesem Umdruck gibt es verschiedene Verweise auf Resourcen im WWW. Ein Verweis auf eine Website sieht wiefolgt aus:
+
+\noindent\fulllink{https://github.com/schlingensiepen/cloudification-esp8266}
+
+Da es in der Regel lästig und fehleranfällig ist, einen solchen URL abzutippen, ist in der Regel noch ein Kurzlink mit 
+angegeben:
+
+\noindent\shortlink{drj}
+
+Diese Kurzlinks können über die Seite \fulllink{http://link.i3cm.de} angezeigt oder direkt aufgerufen werden.
+
+Wenn Internetseiten als Quelle angegeben werden, ist das wie folgt notiert:
+
+\noindent\linkreference{https://www.arduino.cc/}
+
+Zu diesem Kurs gibt es Beispielquellcode, der über 
+\doublelink{https://github.com/schlingensiepen/cloudification-esp8266}{drj}
+heruntergeladen werden kann. Laden Sie die kompletten Quellen als zip-Archiv
+herunter und entpacken dieses auf der lokalen Festplatte.
+
+Verweise auf eine Beispieldatei aus diesem Archiv werden wie folgt  dargestellt:
+
+\noindent\gitHub{myBlink.ino}
+
+\sect{prekey}{Menüeinträge und Tastenkombinationen}
+
+Anweisungen zum Wählen einer Funktion über das Funktionsmenü einer Softwareanwendung sind wie folgt notiert:
+
+\noindent\menuiii{Hauptmenü}{Menüeintrag}{Unterpunkt}
+
+Die Pfeilrichtung gibt an, in welcher Reihenfolge die Punkte mit der Maus ausgewählt werden müssen.
+
+Tastenkombinationen zum Wählen einer Funktion einer Softwareanwendung über die Tastatur sind wie folgt notiert:
+
+\noindent\keyii{Taste1}{Taste2}
+
+Die Tasten sind in der Regel gleichzeitig zu drücken um die Funktionen aufzurufen.
+
+Im Rahmen des Kurses werden Softwarebibliotheken aus den Arduino-Repositories verwendet. Um die Auswahl der 
+richtigen Bibliothek zu erleichtern, ist diese immer mit Name und Autor angegeben:
+
+\noindent\lib{TelegramBotClient}{Jörn Schlingensiepen}
+
+\vfill\null\pagebreak
+\sect{precode}{Quellcode}
+
+Zur Veranschaulichung sind Beispielquelltexte eingebunden. Diese werden wie folgt dargestellt:
+
+\begin{src}
+  int fak(int i)
+  {
+    if (i==0) return 1;
+    return fak(i-1);
+  }
+\end{src}
+
+Wird im Fließtext auf Quellcode Bezug genommen, so wird dieser innerhalb des 
+Textes durch Verwendung einer anderen Schriftart gekennzeichnet. Aus dem
+Beispiel oben könnte so \code{int fak(int i)} im Fließtext dargestellt werden.
+
+Neben Quellcodes werden auch Flussdiagramme verwendet. Ein Bezug im Text zu einem bestimmten
+Schritt im Flussdiagramm wird so dargestellt: \step{2}.
+
+\sect{predef}{Begriffe und Definitionen}
+
+Wenn im Fließtext ein Begriff eingeführt wird, der zur Fachsprache gehört und deshalb
+erinnernswert ist, wird dieser wie folgt hervorgehoben:
+
+\noindent\term{Serielle Schnittstelle}
+
+Wird eine Abkürzung eingeführt sind die Buchstaben, die diese Abkürzung ergeben, wie folgt kenntlich gemacht:
+
+\noindent\abbr{E}lectrically \abbr{E}rasable \abbr{P}rogrammable \abbr{R}ead-\abbr{O}nly \abbr{M}emory kurz \abbr{EEPROM}
+
+Für besonders wichtige Begriffe gibt es Definitionen, die wie folgt dargestellt werden:
+
+\begin{definition}{schueler}{Schüler}
+Ein Schüler oder eine Schülerin ist nach der Wortbedeutung ursprünglich eine Person, die im organisatorischen Rahmen einer Schule lernt. 
+Dabei erhalten sie von entsprechenden Lehrern Unterricht, um in einem Lernprozess Fertigkeiten, Wissen, Einsichten und Verhaltensweisen zu erwerben, 
+zu erweitern, einzuüben und zu vertiefen. 
+\end{definition}
+
+\sect{preinfo}{Beigefügte Informationen}
+
+Zu einigen Themen gibt es Exkurse, die wie folgt dargestellt sind:
+\end{multicols}
+\begin{excursus}{pre}{Bedeutung des Exkurses}
+Exkurse behandeln Themen, die beim Verständnis des Kurse helfen oder interessantes Hintergrundwissen darstellen. Grundsätzlich kann der Kurs auch
+ohne das Lesen der Exkurse bewältigt werden.
+\end{excursus}
+\begin{multicols}{2}
+
+Zum Nachvollziehen und Vertiefen des Stoffes sind Aufgabenstellungen in den Kurs eingearbeitet, diese sind wie folgt dargestellt:
+
+\begin{excercise}{pre}{Aufgabentitel}
+Beschreibung der Aufgabenstellung 
+\end{excercise}
+
+Zusätzliche besondere Hinweise sind wie folgt dargestellt:
+
+\begin{anotation}
+Besonderer Hinweis.
+\end{anotation}
+
+
+
+\setcounter{excursuscounter}{0}
+\setcounter{definitioncounter}{0}
+\setcounter{excercisecounter}{0}

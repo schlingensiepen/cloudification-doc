@@ -1,0 +1,43 @@
+%% Defines
+
+\def \coursetitlefirst {oLaF- offenes Labor Fulda}
+\def \coursetitlesecond {Arduinokurs Digitalisierung 2019}
+\def \coursename {Eltern-Kind-Workshop \emph{oLaF- Arduinokurs Digitalisierung 2019}}
+\def \publisher {oLaF - offenes Labor Fulda}
+\def \foot {Arduinokurs Digitalisierung 2019 - Jörn Schlingensiepen}
+
+\def \coursetitlefirst {Praktische Lehrveranstaltung}
+\def \coursetitlesecond {Cloudification}
+\def \coursename {Kurs \emph{Cloudification}}
+\def \publisher {Jörn Schlingensiepen}
+\def \foot {Cloudification}
+
+
+\documentclass[a4paper, headsepline,footsepline,plainfootsepline,twoside]{scrbook}
+
+\input{Inc/import}
+\input{Inc/setuplayout}
+
+\begin{document}
+\pagestyle{scrheadings}
+
+\input{title}
+
+\tableofcontents
+
+\KOMAoptions{open=right}
+
+\begin{multicols}{2}
+
+\input{Chapter/Preface}
+\input{Chapter/Chap01}
+\input{Chapter/Chap02}
+\input{Chapter/Chap03}
+\input{Chapter/Chap04}
+
+\end{multicols}
+
+\listoffigures
+
+\end{document}
+

@@ -1,0 +1,34 @@
+
+
+\clearscrheadfoot
+
+\automark[section]{chapter}
+
+\def\lfoot{
+	\foot
+	}
+\def\rfoot{
+  \publisher
+	}
+
+\lehead[]{\headmark}
+\lohead[]{}
+\rehead[]{}
+\rohead[]{\headmark}
+
+\lefoot[\thepage]{\thepage}
+\rofoot[\thepage]{\thepage}
+\lofoot[\lfoot]{\lfoot}
+\refoot[\rfoot]{\rfoot}
+
+\geometry{a4paper, 
+   portrait, 
+	 left=3.5cm, 
+	 right=2cm, 
+	 top=2cm, 
+	 bottom=2cm, 
+	 includefoot, includehead}
+	
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
